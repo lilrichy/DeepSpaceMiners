@@ -21,6 +21,7 @@ public class Graphics {
 
     // Ship Graphics
     public static Texture texture_wormHole;
+    public static Texture texture_ship1;
 
     // Meteor Graphics
     public static Texture texture_meteorRegular;
@@ -45,6 +46,7 @@ public class Graphics {
 
     public  static void loadShip(){
         texture_wormHole = new Texture(Gdx.files.internal("Ships/wormHole.png"));
+        texture_ship1 = new Texture(Gdx.files.internal("Ships/ship1.png"));
     }
 
     public static void loadMeteor(){

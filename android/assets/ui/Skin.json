@@ -19,7 +19,7 @@
 		big:     { font: black64, fontColor: black },
 		small:   { font: black16, fontColor: black },
 		bigWhite: { font: white64, fontColor: white },
-		field:  { font: white16, fontColor: white }
+		field:  { font: black32, fontColor: black }
 	},
 	com.badlogic.gdx.scenes.scene2d.ui.TextButton$TextButtonStyle: {
 		default: { up: blue_button_up, down: blue_button_down, font: black32, pressedOffsetX: 1, pressedOffsetY: -1 },
