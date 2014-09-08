@@ -1,17 +1,15 @@
 package com.reigens.deepSpaceMiners;
 
 import com.badlogic.gdx.Game;
+import com.reigens.deepSpaceMiners.Screens.LevelSelectScreen;
 
 public class GameMain extends Game {
 
-    public GameScreen game_screen;
+    public LevelSelectScreen menuScreen;
 
     @Override
     public void create() {
-        Assets.load();
-
-        game_screen = new GameScreen(this);
-
-        setScreen(game_screen);
+        menuScreen = new LevelSelectScreen(this);
+        setScreen(menuScreen);
     }
 }
