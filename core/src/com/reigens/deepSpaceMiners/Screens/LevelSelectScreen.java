@@ -124,9 +124,9 @@ public class LevelSelectScreen implements Screen {
 
 //Set up Table
 
-        table.add(new Label("SELECT LEVEL", skin, "bigWhite")).padTop(20).colspan(3).expandX().spaceBottom(50).row();
-        table.add(scrollPane).width(200).padLeft(25).left();
-        table.add(textPane).right().width(350);
+        table.add(new Label("SELECT LEVEL", skin, "bigWhite")).top().padTop(20).colspan(3).expandX().spaceBottom(50).row();
+        table.add(scrollPane).width(200).padLeft(25).left().maxHeight(Gdx.graphics.getHeight() / 2);
+        table.add(textPane).right().width(Gdx.graphics.getWidth() - scrollPane.getWidth() - 200).spaceLeft(50).height(Gdx.graphics.getHeight() / 2).maxHeight(Gdx.graphics.getHeight() / 2);
         table.add().row();
         table.add(play).colspan(3).expandX().padBottom(10).padTop(50).padRight(50).bottom().right();
 
