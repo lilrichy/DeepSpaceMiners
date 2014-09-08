@@ -76,7 +76,7 @@ public class Level1Screen implements Screen {
         //Initialize graphics
         wormHole.image = wormHole.wormHole_animation.getKeyFrame(stateTime, true);
         regularMeteor.image = RegularMeteor.animation.getKeyFrame(stateTime, true);
-        ship.image.setSize(196, 196);
+        ship.image.setSize(228, 228);
         ship.image.setCenter(shipX - 50, shipY);
         ship.image.setOriginCenter();
 
@@ -112,6 +112,9 @@ public class Level1Screen implements Screen {
     }
 
     public void generalUpdate(Vector3 touch, OrthographicCamera camera) {
+        ship.image.setRotation(0);
+        wormHole.bounds.x = shipX - ship.image.getWidth();
+        wormHole.bounds.y = shipY + 75;
         if (Gdx.input.isTouched()){
             touch.set(Gdx.input.getX(), Gdx.input.getY(), 0);
             camera.unproject(touch);
@@ -121,8 +124,8 @@ public class Level1Screen implements Screen {
 
 
             // Sets the X,Y for the wormHole
-            wormHole.bounds.x = shipX - ship.image.getWidth() / 2;
-            wormHole.bounds.y = shipY + 75;
+            wormHole.bounds.setPosition(shipX * touch.x, shipY * touch.y);
+
             // Check to see if ship was touched and update its X,Y if it was
           if (ship.image.getBoundingRectangle().contains(touch.x, touch.y))
             {
@@ -136,7 +139,10 @@ public class Level1Screen implements Screen {
                 Helper.Log(degrees.toString());
             }
 
-        }else  wormHole.bounds.setSize(128,128); wormHole.bounds.x = shipX - ship.image.getWidth() / 2;
+        }
+
+         wormHole.bounds.setSize(128,128);
+         wormHole.bounds.x = shipX - ship.image.getWidth() / 2;
 
         //Keyboard Keys input - not needed "WIP"
         if (Gdx.input.isKeyPressed(Input.Keys.A) || (Gdx.input.isKeyPressed(Input.Keys.LEFT)))
