@@ -95,14 +95,15 @@ public class Level1Screen implements Screen {
                     regularMeteor.bounds.width, regularMeteor.bounds.height);
         }
 
-        batch.draw(Graphics.sprite_scorePanelLeft, -50, 1080 -200, 650, 300);
-        batch.draw(Graphics.sprite_scorePanelRight,1320, 1080 -200, 650, 300);
-        blackFont.setScale(2, 2);
-        blackFont.draw(batch, "Meteors Collected: " + meteorsGathered, 75, 1060);
-        blackFont.draw(batch, "Speed: " + fallSpeed, 1500, 1060);
-        redFont.setScale(2, 2);
+        batch.draw(Graphics.sprite_scorePanelLeft, 0, 880, 650, 200);
+        batch.draw(Graphics.sprite_scorePanelRight,1270, 880, 650, 200);
+        batch.draw(Graphics.sprite_topBar, 650, 880, 620, 200 );
+        blackFont.setScale(3f, 4f);
+        blackFont.draw(batch, "Collected: " + meteorsGathered, 110, 1040);
+        blackFont.draw(batch, "Speed: " + fallSpeed, 1500, 1040);
+        redFont.setScale(3f, 4f);
         redFont.setColor(Color.RED);
-        redFont.draw(batch, "Meteors Missed: " + meteorsMissed, 125, 1000);
+        redFont.draw(batch, "Missed: " + meteorsMissed, 210, 980);
 
         batch.draw(wormHole.image, wormHole.bounds.x, wormHole.bounds.y, wormHole.bounds.width, wormHole.bounds.height);
 
