@@ -130,8 +130,8 @@ public class Level1Screen implements Screen {
             // Check to see if ship was touched and update its X,Y if it was
           if (ship.image.getBoundingRectangle().contains(touch.x, touch.y))
             {
-                wormHole.bounds.setSize(256,256);
-                wormHole.bounds.setX(shipX - ship.image.getWidth() / 2);
+              //  wormHole.bounds.setSize(256,256);
+              //  wormHole.bounds.setX(shipX - ship.image.getWidth() * 50);
 
                 shipX =  (int)touch.x;
                 shipY =  (int)touch.y;
@@ -139,8 +139,8 @@ public class Level1Screen implements Screen {
                 ship.image.setRotation(degrees);
             }
         }
-        wormHole.bounds.setSize(128,128);
-        wormHole.bounds.x = shipX - ship.image.getWidth() / 2;
+        wormHole.bounds.setSize(256,256);
+        wormHole.bounds.x = shipX - wormHole.bounds.getWidth() / 2;
 
 
         //Keyboard Keys input - not needed "WIP"
