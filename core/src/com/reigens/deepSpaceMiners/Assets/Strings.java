@@ -16,17 +16,25 @@ public class Strings {
             "Once you get enough credits you can work on getting a bigger and better ship to go after the high paying meteors. \n\n" +
 
             "Good luck out there!";
+    public static String levelGoal1 = "You have a small weak ship, so be careful it wont take much damage. \n" +
+            "Collect 500 Meteors!";
+
     public static String level2 = "Coming Soon!";
+    public static String levelGoal2 = "Coming Soon!";
     public static String level3 = "Coming Soon!";
+    public static String levelGoal3 = "Coming Soon!";
     public static String level4 = "Coming Soon!";
+    public static String levelGoal4 = "Coming Soon!";
     public static String level5 = "Coming Soon!";
+    public static String levelGoal5 = "Coming Soon!";
+
+    public static String locked = "Locked Please Complete Lower Levels to Unlock This Level.";
 
 
-        //Completed Mission
+    //Completed Mission
 
-        //Failed Missions
+    //Failed Missions
 
 
-
-    }
+}
 

@@ -19,6 +19,7 @@ public class RegularMeteor {
     public static TextureRegion current_frame;
     public static Animation animation;
 
+
     public static void spawnMeteor() {
 
         bounds = new Rectangle();

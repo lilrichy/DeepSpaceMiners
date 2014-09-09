@@ -12,19 +12,26 @@
 		white32: { file: font/white32.fnt },
 		black32: { file: font/black32.fnt },
 		white16: { file: font/white16.fnt },
-		black16: { file: font/black16.fnt }
+		black16: { file: font/black16.fnt },
+		black24: { file: font/black24.fnt }
 	},
 	com.badlogic.gdx.scenes.scene2d.ui.Label$LabelStyle: {
 		default: { font: black32, fontColor: black },
 		big:     { font: black64, fontColor: black },
 		small:   { font: black16, fontColor: black },
 		bigWhite: { font: white64, fontColor: white },
-		field:  { font: black32, fontColor: black }
+		smallWhite: { font: white32, fontColor: white},
+		field:  { font: black32, fontColor: black },
+		fieldSmall:  { font: black24, fontColor: black }
 	},
 	com.badlogic.gdx.scenes.scene2d.ui.TextButton$TextButtonStyle: {
 		default: { up: blue_button_up, down: blue_button_down, font: black32, pressedOffsetX: 1, pressedOffsetY: -1 },
 		big:     { up: blue_button_up, down: blue_button_down, font: black64, pressedOffsetX: 1, pressedOffsetY: -1 },
 		small:   { up: blue_button_up, down: blue_button_down, font: black16, pressedOffsetX: 1, pressedOffsetY: -1 }
+	},
+	com.badlogic.gdx.scenes.scene2d.ui.ImageButton$ImageButtonStyle: {
+	    default: { up: closeButtonUp, down: closeButtonDown, pressedOffsetX: 1, pressedOffsetY: -1 },
+	    exit: { up: closeButtonUp, down: closeButtonDown, pressedOffsetX: 1, pressedOffsetY: -1 },
 	},
 	com.badlogic.gdx.scenes.scene2d.ui.List$ListStyle: {
 		default: { font: white32, fontColorUnselected: white, fontColorSelected: black, selection: selection }

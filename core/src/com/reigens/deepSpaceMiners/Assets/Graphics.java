@@ -18,6 +18,8 @@ public class Graphics {
     public static Texture texture_scorePanel;
     public static Sprite sprite_scorePanelLeft;
     public static Sprite sprite_scorePanelRight;
+    public static Texture texture_topBar;
+    public static Sprite sprite_topBar;
 
     // Ship Graphics
     public static Texture texture_wormHole;
@@ -42,6 +44,11 @@ public class Graphics {
         sprite_scorePanelLeft.flip(true, false);
         sprite_scorePanelRight = new Sprite(texture_scorePanel);
         sprite_scorePanelRight.flip(false, false);
+        texture_topBar = new Texture(Gdx.files.internal("Level1/topBar.png"));
+        texture_topBar.setFilter(Texture.TextureFilter.Linear, Texture.TextureFilter.Linear);
+        sprite_topBar = new Sprite(texture_topBar);
+        sprite_topBar.flip(false, false);
+
     }
 
     public  static void loadShip(){

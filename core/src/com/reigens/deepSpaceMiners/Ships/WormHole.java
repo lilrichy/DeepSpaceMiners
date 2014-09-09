@@ -16,7 +16,7 @@ public class WormHole {
     public static Animation wormHole_animation;
 
     public WormHole() {
-        bounds = new Rectangle(960, 540, 128, 128);
+        bounds = new Rectangle(960, 500, 128, 128);
         image = current_frame;
         TextureRegion[][] Temp = TextureRegion.split(Graphics.texture_wormHole, 32, 32);
         wormHole_frames = new TextureRegion[20];

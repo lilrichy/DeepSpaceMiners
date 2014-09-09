@@ -13,15 +13,18 @@ import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.TimeUtils;
 import com.reigens.deepSpaceMiners.Assets.Graphics;
+import com.reigens.deepSpaceMiners.GameMain;
 import com.reigens.deepSpaceMiners.Helper;
 import com.reigens.deepSpaceMiners.Meteors.RegularMeteor;
 import com.reigens.deepSpaceMiners.Ships.Ship1;
 import com.reigens.deepSpaceMiners.Ships.WormHole;
+
 /**
  * Created by Richard Reigens on 9/6/2014.
  */
 
 public class Level1Screen implements Screen {
+    GameMain game;
     OrthographicCamera camera;
     float stateTime;
     public static SpriteBatch batch;
@@ -31,6 +34,7 @@ public class Level1Screen implements Screen {
     BitmapFont blackFont, redFont;
     WormHole wormHole;
     Ship1 ship;
+    boolean gameState = true;
 
     RegularMeteor regularMeteor;
     public static Array<Rectangle> smallRegMeteors;
@@ -40,13 +44,19 @@ public class Level1Screen implements Screen {
     public static long lastDropTime;
 
     //Changeable variables
-    int ShipSizeX = 256, ShipSizeY = 256;// Ship Size
-    int fallSpeed = 100;// Starting Speed
+    int shipSizeX = 256, shipSizeY = 256;// Ship Size
+    int startingHull = 100;// Default Hull integrity to reset to
+    int shipHull = 100;// Hull integrity Total - set same as startingHull but this value changes while playing
+    int startingSpeed = 100;// Default Starting speed to reset to "same as fall speed"
+    int fallSpeed = 100;// Starting Speed - Set same as startingSpeed, but this value changes while playing.
     int maxSpeed = 500;// Cap on meteor speed - higher is faster
     int speedRate = 500;// Rate of speed increase - higher is slower increase over time
     int meteorRate = 500;// Time in between meteors - higher is less meteors
 
-    public Level1Screen() {
+    public Level1Screen(GameMain game) {
+        this.game = game;
+
+
         //Initialize Variables and any other "run once" commands
         camera = new OrthographicCamera();
         camera.setToOrtho(false, 1920, 1080);
@@ -62,7 +72,7 @@ public class Level1Screen implements Screen {
         touch = new Vector3();
         regularMeteor = new RegularMeteor();
         smallRegMeteors = new Array<Rectangle>();
-        RegularMeteor.spawnMeteor();
+        //  RegularMeteor.spawnMeteor();
 
 
     }
@@ -77,9 +87,10 @@ public class Level1Screen implements Screen {
 
         //Initialize graphics
         wormHole.image = wormHole.wormHole_animation.getKeyFrame(stateTime, true);
+            if (gameState == true)
         regularMeteor.image = RegularMeteor.animation.getKeyFrame(stateTime, true);
 
-        ship.image.setSize(228, 228);
+        ship.image.setSize(shipSizeX, shipSizeY);
         ship.image.setCenter(shipX, shipY);
         ship.image.setOriginCenter();
 
@@ -96,11 +107,12 @@ public class Level1Screen implements Screen {
         }
 
         batch.draw(Graphics.sprite_scorePanelLeft, 0, 880, 650, 200);
-        batch.draw(Graphics.sprite_scorePanelRight,1270, 880, 650, 200);
-        batch.draw(Graphics.sprite_topBar, 650, 880, 620, 200 );
+        batch.draw(Graphics.sprite_scorePanelRight, 1270, 880, 650, 200);
+        batch.draw(Graphics.sprite_topBar, 650, 880, 620, 200);
         blackFont.setScale(3f, 4f);
         blackFont.draw(batch, "Collected: " + meteorsGathered, 110, 1040);
         blackFont.draw(batch, "Speed: " + fallSpeed, 1500, 1040);
+        blackFont.draw(batch, "Hull Integrity " + shipHull, 1350, 980);
         redFont.setScale(3f, 4f);
         redFont.setColor(Color.RED);
         redFont.draw(batch, "Missed: " + meteorsMissed, 210, 980);
@@ -113,61 +125,75 @@ public class Level1Screen implements Screen {
         batch.end();
     }
 
+    public void setGameState(boolean running, boolean reset) {
+        // Boolean running: to set state whether the game is currently playing or paused
+        // Boolean reset: to reset the screen back to default values when game over.
+        if (reset == true)
+        {
+            meteorsGathered = 0;
+            meteorsMissed = 0;
+            fallSpeed = startingSpeed;
+            shipHull = startingHull;
+            shipX = 960;
+            shipY = 540;
+            smallRegMeteors.clear();
+        }
+
+        if (running == false)
+        {
+            gameState = false;
+        }
+        else if (running == true)
+        {
+            gameState = true;
+        }
+
+    }
+
     public void generalUpdate(Vector3 touch, OrthographicCamera camera) {
         ship.image.setRotation(0);
         wormHole.bounds.x = shipX - ship.image.getWidth();
         wormHole.bounds.y = shipY + 75;
-        if (Gdx.input.isTouched()){
+        if (gameState == true && Gdx.input.isTouched())
+        {
             touch.set(Gdx.input.getX(), Gdx.input.getY(), 0);
             camera.unproject(touch);
 
-            Float  degrees = (float) ((Math.atan2 (touch.x - shipX,
-                 -(touch.y - shipY))*180.0d/Math.PI)-180.0f);
+            Float degrees = (float) ((Math.atan2(touch.x - shipX,
+                    -(touch.y - shipY)) * 180.0d / Math.PI) - 180.0f);
 
 
             // Sets the X,Y for the wormHole
             wormHole.bounds.setPosition(shipX * touch.x, shipY * touch.y);
 
             // Check to see if ship was touched and update its X,Y if it was
-          if (ship.image.getBoundingRectangle().contains(touch.x, touch.y))
+            if (ship.image.getBoundingRectangle().contains(touch.x, touch.y))
             {
-              //  wormHole.bounds.setSize(256,256);
-              //  wormHole.bounds.setX(shipX - ship.image.getWidth() * 50);
+                //  wormHole.bounds.setSize(256,256);
+                //  wormHole.bounds.setX(shipX - ship.image.getWidth() * 50);
 
-                shipX =  (int)touch.x;
-                shipY =  (int)touch.y;
+                shipX = (int) touch.x;
+                shipY = (int) touch.y;
                 ship.image.setOriginCenter();
                 ship.image.setRotation(degrees);
             }
         }
-        wormHole.bounds.setSize(256,256);
+        wormHole.bounds.setSize(256, 256);
         wormHole.bounds.x = shipX - wormHole.bounds.getWidth() / 2;
 
 
-        //Keyboard Keys input - not needed "WIP"
-        if (Gdx.input.isKeyPressed(Input.Keys.A))
+        //Keyboard Keys input - not needed  "testing purposes only"
+        if (Gdx.input.isKeyJustPressed(Input.Keys.UP))
         {
-            shipX -= 10;
-        }
-        else if (Gdx.input.isKeyPressed(Input.Keys.D))
-        {
-            shipX += 10;
-        }
-        else if (Gdx.input.isKeyPressed(Input.Keys.W))
-        {
-            shipY -= 10;
-        }
-        else if (Gdx.input.isKeyPressed(Input.Keys.S))
-        {
-            shipY += 10;
-        }
-        else if (Gdx.input.isKeyJustPressed(Input.Keys.UP))
-        {
-           camera.zoom += .5;
+            camera.zoom += .5;
         }
         else if (Gdx.input.isKeyJustPressed(Input.Keys.DOWN))
         {
             camera.zoom -= .5;
+        }
+        if (Gdx.input.isKeyPressed(Input.Keys.BACK) || (Gdx.input.isKeyPressed(Input.Keys.ESCAPE)))
+        {
+            pause();
         }
 
         // Check if WormHole is at screen boarder and keep it there, to prevent it going off screen
@@ -185,12 +211,13 @@ public class Level1Screen implements Screen {
         }
 
         // Sets Spawn rate for Meteors
-        if (TimeUtils.millis() - lastDropTime > meteorRate) RegularMeteor.spawnMeteor();
+        if (gameState == true && TimeUtils.millis() - lastDropTime > meteorRate) RegularMeteor.spawnMeteor();
 
         // Sets Speed of Meteors
-        if (TimeUtils.millis() - speedTime > speedRate){
+        if (gameState == true && TimeUtils.millis() - speedTime > speedRate)
+        {
             if (fallSpeed < maxSpeed)
-            fallSpeed += 5;
+                fallSpeed += 5;
             speedTime = TimeUtils.millis();
         }
 
@@ -198,7 +225,7 @@ public class Level1Screen implements Screen {
         while (iter.hasNext())
         {
             Rectangle smallRegMeteor = iter.next();
-            smallRegMeteor.y -=fallSpeed * Gdx.graphics.getDeltaTime();
+            smallRegMeteor.y -= fallSpeed * Gdx.graphics.getDeltaTime();
 
             if (smallRegMeteor.y + 64 < 0)
             {
@@ -210,8 +237,17 @@ public class Level1Screen implements Screen {
                 meteorsGathered++;
                 iter.remove();
             }
-            if (smallRegMeteor.overlaps(ship.image.getBoundingRectangle())){
+            if (smallRegMeteor.overlaps(ship.image.getBoundingRectangle()))
+            {
                 Helper.Log("Ship hit" + smallRegMeteor);
+                shipHull--;
+                if (shipHull <= 0)
+                {
+
+                    // to be replaced by lose screen ****************
+                    game.setScreen(game.levelSelectScreen);
+
+                }
 
             }
         }
@@ -225,21 +261,29 @@ public class Level1Screen implements Screen {
 
     @Override
     public void show() {
+        Gdx.input.setCatchBackKey(true);
+        setGameState(true, true);
+
 
     }
 
     @Override
     public void hide() {
-
+        setGameState(false, false);
     }
 
     @Override
     public void pause() {
+        game.pauseScreen.show();
+        game.pauseScreen.resume();
+        game.setScreen(game.pauseScreen);
+        setGameState(false, false);
 
     }
 
     @Override
     public void resume() {
+        setGameState(true, false);
 
     }
 
