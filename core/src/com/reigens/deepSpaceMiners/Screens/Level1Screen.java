@@ -25,8 +25,8 @@ public class Level1Screen implements Screen {
     OrthographicCamera camera;
     float stateTime;
     public static SpriteBatch batch;
-    int shipX = 960;
-    int shipY = 540;
+    public int shipX = 960;
+    public int shipY = 540;
     Vector3 touch;
     BitmapFont blackFont, redFont;
     WormHole wormHole;
@@ -40,6 +40,7 @@ public class Level1Screen implements Screen {
     public static long lastDropTime;
 
     //Changeable variables
+    int ShipSizeX = 256, ShipSizeY = 256;// Ship Size
     int fallSpeed = 100;// Starting Speed
     int maxSpeed = 500;// Cap on meteor speed - higher is faster
     int speedRate = 500;// Rate of speed increase - higher is slower increase over time
@@ -63,6 +64,7 @@ public class Level1Screen implements Screen {
         smallRegMeteors = new Array<Rectangle>();
         RegularMeteor.spawnMeteor();
 
+
     }
 
     @Override
@@ -76,11 +78,10 @@ public class Level1Screen implements Screen {
         //Initialize graphics
         wormHole.image = wormHole.wormHole_animation.getKeyFrame(stateTime, true);
         regularMeteor.image = RegularMeteor.animation.getKeyFrame(stateTime, true);
+
         ship.image.setSize(228, 228);
-        ship.image.setCenter(shipX - 50, shipY);
+        ship.image.setCenter(shipX, shipY);
         ship.image.setOriginCenter();
-
-
 
         batch.setProjectionMatrix(camera.combined);
         batch.begin();
@@ -130,36 +131,42 @@ public class Level1Screen implements Screen {
           if (ship.image.getBoundingRectangle().contains(touch.x, touch.y))
             {
                 wormHole.bounds.setSize(256,256);
-                wormHole.bounds.setX(shipX - ship.image.getWidth() * 2);
+                wormHole.bounds.setX(shipX - ship.image.getWidth() / 2);
 
                 shipX =  (int)touch.x;
                 shipY =  (int)touch.y;
                 ship.image.setOriginCenter();
                 ship.image.setRotation(degrees);
-                Helper.Log(degrees.toString());
             }
-
         }
+        wormHole.bounds.setSize(128,128);
+        wormHole.bounds.x = shipX - ship.image.getWidth() / 2;
 
-         wormHole.bounds.setSize(128,128);
-         wormHole.bounds.x = shipX - ship.image.getWidth() / 2;
 
         //Keyboard Keys input - not needed "WIP"
-        if (Gdx.input.isKeyPressed(Input.Keys.A) || (Gdx.input.isKeyPressed(Input.Keys.LEFT)))
+        if (Gdx.input.isKeyPressed(Input.Keys.A))
         {
             shipX -= 10;
         }
-        else if (Gdx.input.isKeyPressed(Input.Keys.D) || (Gdx.input.isKeyPressed(Input.Keys.RIGHT)))
+        else if (Gdx.input.isKeyPressed(Input.Keys.D))
         {
             shipX += 10;
         }
-        else if (Gdx.input.isKeyPressed(Input.Keys.W) || (Gdx.input.isKeyPressed(Input.Keys.UP)))
+        else if (Gdx.input.isKeyPressed(Input.Keys.W))
         {
             shipY -= 10;
         }
-        else if (Gdx.input.isKeyPressed(Input.Keys.S) || (Gdx.input.isKeyPressed(Input.Keys.DOWN)))
+        else if (Gdx.input.isKeyPressed(Input.Keys.S))
         {
             shipY += 10;
+        }
+        else if (Gdx.input.isKeyJustPressed(Input.Keys.UP))
+        {
+           camera.zoom += .5;
+        }
+        else if (Gdx.input.isKeyJustPressed(Input.Keys.DOWN))
+        {
+            camera.zoom -= .5;
         }
 
         // Check if WormHole is at screen boarder and keep it there, to prevent it going off screen
@@ -175,14 +182,6 @@ public class Level1Screen implements Screen {
         {
             shipY = 1;
         }
-        /*if (shipY > camera.viewportHeight /3 - ship.image.getHeight())
-        {
-            shipY = (int) camera.viewportHeight /3 - (int) ship.image.getHeight();
-        }*/
-
-
-
-
 
         // Sets Spawn rate for Meteors
         if (TimeUtils.millis() - lastDropTime > meteorRate) RegularMeteor.spawnMeteor();
@@ -198,7 +197,8 @@ public class Level1Screen implements Screen {
         while (iter.hasNext())
         {
             Rectangle smallRegMeteor = iter.next();
-            smallRegMeteor.y -= fallSpeed * Gdx.graphics.getDeltaTime();
+            smallRegMeteor.y -=fallSpeed * Gdx.graphics.getDeltaTime();
+
             if (smallRegMeteor.y + 64 < 0)
             {
                 meteorsMissed++;
@@ -208,6 +208,10 @@ public class Level1Screen implements Screen {
             {
                 meteorsGathered++;
                 iter.remove();
+            }
+            if (smallRegMeteor.overlaps(ship.image.getBoundingRectangle())){
+                Helper.Log("Ship hit" + smallRegMeteor);
+
             }
         }
 
