@@ -17,7 +17,7 @@ public class Strings {
 
             "Good luck out there!";
     public static String levelGoal1 = "You have a small weak ship, so be careful it wont take much damage. \n" +
-            "Collect 500 Meteors!";
+            "Collect 50 Meteors!";
 
     public static String level2 = "Coming Soon!";
     public static String levelGoal2 = "Coming Soon!";

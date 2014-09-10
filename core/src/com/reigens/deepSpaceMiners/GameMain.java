@@ -2,6 +2,7 @@ package com.reigens.deepSpaceMiners;
 
 import com.badlogic.gdx.Game;
 import com.reigens.deepSpaceMiners.Screens.*;
+import com.reigens.deepSpaceMiners.Screens.Levels.Level1Screen;
 
 public class GameMain extends Game {
 

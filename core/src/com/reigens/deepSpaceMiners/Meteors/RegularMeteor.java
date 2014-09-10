@@ -6,7 +6,7 @@ import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.utils.TimeUtils;
 import com.reigens.deepSpaceMiners.Assets.Graphics;
-import com.reigens.deepSpaceMiners.Screens.Level1Screen;
+import com.reigens.deepSpaceMiners.Screens.Levels.Level1Screen;
 
 /**
  * Created by Richard Reigens on 9/6/2014.
@@ -25,8 +25,8 @@ public class RegularMeteor {
         bounds = new Rectangle();
         bounds.x = MathUtils.random(50, 1920 - 128);
         bounds.y = 1080;
-        bounds.width = 128;
-        bounds.height = 128;
+        bounds.width = 96;
+        bounds.height = 96;
         Level1Screen.smallRegMeteors.add(bounds);
         Level1Screen.lastDropTime = TimeUtils.millis();
 

@@ -1,4 +1,4 @@
-package com.reigens.deepSpaceMiners.Screens;
+package com.reigens.deepSpaceMiners.Screens.Levels;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
@@ -52,6 +52,7 @@ public class Level1Screen implements Screen {
     int maxSpeed = 500;// Cap on meteor speed - higher is faster
     int speedRate = 500;// Rate of speed increase - higher is slower increase over time
     int meteorRate = 500;// Time in between meteors - higher is less meteors
+    int meteorsToWin = 50;// Number of meteors required to win
 
     public Level1Screen(GameMain game) {
         this.game = game;
@@ -234,6 +235,12 @@ public class Level1Screen implements Screen {
             }
             if (smallRegMeteor.overlaps(WormHole.bounds))
             {
+                if (meteorsGathered >= meteorsToWin){
+                    //Go to Win Screen
+                    game.setScreen(game.wonScreen);
+                Helper.Log("You Win");
+
+            }else
                 meteorsGathered++;
                 iter.remove();
             }
@@ -243,10 +250,8 @@ public class Level1Screen implements Screen {
                 shipHull--;
                 if (shipHull <= 0)
                 {
-
                     // to be replaced by lose screen ****************
                     game.setScreen(game.levelSelectScreen);
-
                 }
 
             }
