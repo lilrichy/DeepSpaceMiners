@@ -16,8 +16,8 @@ public class Strings {
             "Once you get enough credits you can work on getting a bigger and better ship to go after the high paying meteors. \n\n" +
 
             "Good luck out there!";
-    public static String levelGoal1 = "You have a small weak ship, so be careful it wont take much damage. \n" +
-            "Collect 50 Meteors!";
+    public static String levelGoal1 = "Collect 50 Meteors!\n" +
+            "You have a small weak ship, so be careful it wont take much damage.";
 
     public static String level2 = "Coming Soon!";
     public static String levelGoal2 = "Coming Soon!";
