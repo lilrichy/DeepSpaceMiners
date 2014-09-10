@@ -13,9 +13,9 @@ import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.TimeUtils;
 import com.reigens.deepSpaceMiners.Assets.Graphics;
+import com.reigens.deepSpaceMiners.Asteroids.RegularAsteroids;
 import com.reigens.deepSpaceMiners.GameMain;
 import com.reigens.deepSpaceMiners.Helper;
-import com.reigens.deepSpaceMiners.Meteors.RegularMeteor;
 import com.reigens.deepSpaceMiners.Ships.Ship1;
 import com.reigens.deepSpaceMiners.Ships.WormHole;
 
@@ -36,10 +36,10 @@ public class Level1Screen implements Screen {
     Ship1 ship;
     boolean gameState = true;
 
-    RegularMeteor regularMeteor;
-    public static Array<Rectangle> smallRegMeteors;
-    int meteorsGathered;
-    int meteorsMissed;
+    RegularAsteroids regularAsteroids;
+    public static Array<Rectangle> smallRegularAsteroids;
+    int asteroidsGathered;
+    int asteroidsMissed;
     long speedTime = TimeUtils.millis();
     public static long lastDropTime;
 
@@ -49,10 +49,10 @@ public class Level1Screen implements Screen {
     int shipHull = 100;// Hull integrity Total - set same as startingHull but this value changes while playing
     int startingSpeed = 100;// Default Starting speed to reset to "same as fall speed"
     int fallSpeed = 100;// Starting Speed - Set same as startingSpeed, but this value changes while playing.
-    int maxSpeed = 500;// Cap on meteor speed - higher is faster
+    int maxSpeed = 500;// Cap on asteroid speed - higher is faster
     int speedRate = 500;// Rate of speed increase - higher is slower increase over time
-    int meteorRate = 500;// Time in between meteors - higher is less meteors
-    int meteorsToWin = 50;// Number of meteors required to win
+    int asteroidRate = 500;// Time in between asteroids - higher is less asteroids
+    int asteroidsToWin = 50;// Number of asteroids required to win
 
     public Level1Screen(GameMain game) {
         this.game = game;
@@ -63,7 +63,7 @@ public class Level1Screen implements Screen {
         camera.setToOrtho(false, 1920, 1080);
         Graphics.loadLevel1();
         Graphics.loadShip();
-        Graphics.loadMeteor();
+        Graphics.loadAsteroid();
         blackFont = new BitmapFont(Gdx.files.internal("font/black14.fnt"));
         redFont = new BitmapFont(Gdx.files.internal("font/red14.fnt"));
         stateTime = 0f;
@@ -71,9 +71,9 @@ public class Level1Screen implements Screen {
         wormHole = new WormHole();
         ship = new Ship1();
         touch = new Vector3();
-        regularMeteor = new RegularMeteor();
-        smallRegMeteors = new Array<Rectangle>();
-        //  RegularMeteor.spawnMeteor();
+        regularAsteroids = new RegularAsteroids();
+        smallRegularAsteroids = new Array<Rectangle>();
+        //  Regularasteroid.spawnasteroid();
 
 
     }
@@ -89,7 +89,7 @@ public class Level1Screen implements Screen {
         //Initialize graphics
         wormHole.image = wormHole.wormHole_animation.getKeyFrame(stateTime, true);
             if (gameState == true)
-        regularMeteor.image = RegularMeteor.animation.getKeyFrame(stateTime, true);
+        regularAsteroids.image = RegularAsteroids.animation.getKeyFrame(stateTime, true);
 
         ship.image.setSize(shipSizeX, shipSizeY);
         ship.image.setCenter(shipX, shipY);
@@ -101,22 +101,22 @@ public class Level1Screen implements Screen {
         //Draw Graphics on screen
         batch.draw(Graphics.sprite_background, 0, 0, camera.viewportWidth, camera.viewportHeight);
 
-        for (Rectangle smallRegMeteor : smallRegMeteors)
+        for (Rectangle smallRegasteroid : smallRegularAsteroids)
         {
-            batch.draw(regularMeteor.image, smallRegMeteor.x, smallRegMeteor.y,
-                    regularMeteor.bounds.width, regularMeteor.bounds.height);
+            batch.draw(regularAsteroids.image, smallRegasteroid.x, smallRegasteroid.y,
+                    regularAsteroids.bounds.width, regularAsteroids.bounds.height);
         }
 
         batch.draw(Graphics.sprite_scorePanelLeft, 0, 880, 650, 200);
         batch.draw(Graphics.sprite_scorePanelRight, 1270, 880, 650, 200);
         batch.draw(Graphics.sprite_topBar, 650, 880, 620, 200);
         blackFont.setScale(3f, 4f);
-        blackFont.draw(batch, "Collected: " + meteorsGathered, 110, 1040);
+        blackFont.draw(batch, "Collected: " + asteroidsGathered, 110, 1040);
         blackFont.draw(batch, "Speed: " + fallSpeed, 1500, 1040);
         blackFont.draw(batch, "Hull Integrity " + shipHull, 1350, 980);
         redFont.setScale(3f, 4f);
         redFont.setColor(Color.RED);
-        redFont.draw(batch, "Missed: " + meteorsMissed, 210, 980);
+        redFont.draw(batch, "Missed: " + asteroidsMissed, 210, 980);
 
         batch.draw(wormHole.image, wormHole.bounds.x, wormHole.bounds.y, wormHole.bounds.width, wormHole.bounds.height);
 
@@ -131,13 +131,13 @@ public class Level1Screen implements Screen {
         // Boolean reset: to reset the screen back to default values when game over.
         if (reset == true)
         {
-            meteorsGathered = 0;
-            meteorsMissed = 0;
+            asteroidsGathered = 0;
+            asteroidsMissed = 0;
             fallSpeed = startingSpeed;
             shipHull = startingHull;
             shipX = 960;
             shipY = 540;
-            smallRegMeteors.clear();
+            smallRegularAsteroids.clear();
         }
 
         if (running == false)
@@ -211,10 +211,10 @@ public class Level1Screen implements Screen {
             shipY = 1;
         }
 
-        // Sets Spawn rate for Meteors
-        if (gameState == true && TimeUtils.millis() - lastDropTime > meteorRate) RegularMeteor.spawnMeteor();
+        // Sets Spawn rate for asteroids
+        if (gameState == true && TimeUtils.millis() - lastDropTime > asteroidRate) RegularAsteroids.spawnasteroid();
 
-        // Sets Speed of Meteors
+        // Sets Speed of asteroids
         if (gameState == true && TimeUtils.millis() - speedTime > speedRate)
         {
             if (fallSpeed < maxSpeed)
@@ -222,35 +222,35 @@ public class Level1Screen implements Screen {
             speedTime = TimeUtils.millis();
         }
 
-        java.util.Iterator<Rectangle> iter = smallRegMeteors.iterator();
+        java.util.Iterator<Rectangle> iter = smallRegularAsteroids.iterator();
         while (iter.hasNext())
         {
-            Rectangle smallRegMeteor = iter.next();
-            smallRegMeteor.y -= fallSpeed * Gdx.graphics.getDeltaTime();
+            Rectangle smallRegasteroid = iter.next();
+            smallRegasteroid.y -= fallSpeed * Gdx.graphics.getDeltaTime();
 
-            if (smallRegMeteor.y + 64 < 0)
+            if (smallRegasteroid.y + 64 < 0)
             {
-                meteorsMissed++;
+                asteroidsMissed++;
                 iter.remove();
             }
-            if (smallRegMeteor.overlaps(WormHole.bounds))
+            if (smallRegasteroid.overlaps(WormHole.bounds))
             {
-                if (meteorsGathered == meteorsToWin - 1){
+                if (asteroidsGathered == asteroidsToWin - 1){
                     //Go to Win Screen
                     iter.remove();
                     setGameState(false, true);
                     game.setScreen(game.wonScreen);
 
 
-            }else if (meteorsGathered <= meteorsToWin)
+            }else if (asteroidsGathered <= asteroidsToWin)
                 {
-                    meteorsGathered++;
+                    asteroidsGathered++;
                     iter.remove();
                 }
             }
-            if (smallRegMeteor.overlaps(ship.image.getBoundingRectangle()))
+            if (smallRegasteroid.overlaps(ship.image.getBoundingRectangle()))
             {
-                Helper.Log("Ship hit" + smallRegMeteor);
+                Helper.Log("Ship hit" + smallRegasteroid);
                 shipHull--;
                 if (shipHull <= 0)
                 {
@@ -299,7 +299,7 @@ public class Level1Screen implements Screen {
     @Override
     public void dispose() {
         Graphics.disposeLevel1();
-        Graphics.disposeMeteor();
+        Graphics.disposeasteroid();
         Graphics.disposeShip();
     }
 }

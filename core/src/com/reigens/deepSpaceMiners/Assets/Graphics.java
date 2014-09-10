@@ -9,8 +9,7 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
  * Created by Richard Reigens on 9/6/2014.
  */
 public class Graphics {
-    // Level Select Screen Graphics
- //   public static Texture texture_background;
+
 
     // Level 1 Graphics
     public static Texture texture_background;
@@ -25,8 +24,8 @@ public class Graphics {
     public static Texture texture_wormHole;
     public static Texture texture_ship1;
 
-    // Meteor Graphics
-    public static Texture texture_meteorRegular;
+    // asteroid Graphics
+    public static Texture texture_asteroidRegular;
 
     public static void loadLevelSelectScreen(){
         texture_background = new Texture(Gdx.files.internal("LevelSelectScreen/background.png"));
@@ -56,8 +55,8 @@ public class Graphics {
         texture_ship1 = new Texture(Gdx.files.internal("Ships/ship1.png"));
     }
 
-    public static void loadMeteor(){
-        texture_meteorRegular = new Texture(Gdx.files.internal("Meteors/RegularMeteor.png"));
+    public static void loadAsteroid(){
+        texture_asteroidRegular = new Texture(Gdx.files.internal("Asteroids/RegularAsteroid.png"));
     }
     public static void disposeLevel1() {
         texture_background.dispose();
@@ -66,7 +65,7 @@ public class Graphics {
     public static void disposeShip(){
         texture_wormHole.dispose();
     }
-    public static void disposeMeteor(){
-        texture_meteorRegular.dispose();
+    public static void disposeasteroid(){
+        texture_asteroidRegular.dispose();
     }
 }
