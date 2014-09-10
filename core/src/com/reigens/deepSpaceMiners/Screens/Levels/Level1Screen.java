@@ -235,14 +235,18 @@ public class Level1Screen implements Screen {
             }
             if (smallRegMeteor.overlaps(WormHole.bounds))
             {
-                if (meteorsGathered >= meteorsToWin){
+                if (meteorsGathered == meteorsToWin - 1){
                     //Go to Win Screen
+                    iter.remove();
+                    setGameState(false, true);
                     game.setScreen(game.wonScreen);
-                Helper.Log("You Win");
 
-            }else
-                meteorsGathered++;
-                iter.remove();
+
+            }else if (meteorsGathered <= meteorsToWin)
+                {
+                    meteorsGathered++;
+                    iter.remove();
+                }
             }
             if (smallRegMeteor.overlaps(ship.image.getBoundingRectangle()))
             {

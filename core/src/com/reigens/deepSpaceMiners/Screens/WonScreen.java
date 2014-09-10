@@ -64,7 +64,7 @@ public class WonScreen implements Screen {
 
         //NextLevel button
         TextButton nextButton = new TextButton(" Next Level ", skin);
-        menuButton.addListener(new ClickListener() {
+        nextButton.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 stage.addAction(sequence(moveTo(0, stage.getHeight(), .5f), run(new Runnable() {
