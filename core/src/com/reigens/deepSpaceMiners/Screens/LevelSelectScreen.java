@@ -3,15 +3,17 @@ package com.reigens.deepSpaceMiners.Screens;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
-import com.reigens.deepSpaceMiners.Assets.Graphics;
+import com.reigens.deepSpaceMiners.Assets.Assets;
 import com.reigens.deepSpaceMiners.Assets.Strings;
 import com.reigens.deepSpaceMiners.GameMain;
+import com.reigens.deepSpaceMiners.Screens.Levels.Level1Screen;
 
 import static com.badlogic.gdx.scenes.scene2d.actions.Actions.*;
 
@@ -21,11 +23,8 @@ import static com.badlogic.gdx.scenes.scene2d.actions.Actions.*;
 public class LevelSelectScreen implements Screen {
     GameMain game;
 
-    private TextureAtlas uiAtlas;
     private Stage stage;
     private Table table;
-    private Skin skin;
-    private Image screenBackground;
     private String levelText = Strings.level1;
     private String levelGoal = Strings.levelGoal1;
 
@@ -37,13 +36,11 @@ public class LevelSelectScreen implements Screen {
     public void show() {
         stage = new Stage();
         Gdx.input.setInputProcessor(stage);
-        Graphics.loadLevelSelectScreen();
 
-        uiAtlas = new TextureAtlas(Gdx.files.internal("ui/ui.pack"));
-        skin = new Skin(Gdx.files.internal("ui/Skin.json"), uiAtlas);
-        screenBackground = new Image(Graphics.texture_background);
+        Skin skin = new Skin(Gdx.files.internal("ui/Skin.json"), Assets.manager.get(Assets.uiAtlas, TextureAtlas.class));
+        Image screenBackground = new Image(Assets.manager.get(Assets.levelSelectScreenBackground, Texture.class));
+        screenBackground.setFillParent(true);
         stage.addActor(screenBackground);
-
         table = new Table(skin);
         table.setFillParent(true);
 
@@ -51,13 +48,12 @@ public class LevelSelectScreen implements Screen {
         missionBriefing.setWrap(true);
         final Label missionGoal = new Label(levelGoal, skin, "fieldSmall");
         missionGoal.setWrap(true);
-        final List levelList = new List(skin);
-        levelList.setItems(new String[]{"Level 1", "Level 2", "Level 3", "Level 4", "Level 5"});
+        final List<String> levelList = new List<String>(skin);
+        levelList.setItems("Level 1", "Level 2", "Level 3", "Level 4", "Level 5");
         ScrollPane levelPane = new ScrollPane(levelList, skin);
         ScrollPane missionBriefingPane = new ScrollPane(missionBriefing, skin);
         missionBriefingPane.setFadeScrollBars(false);
         ScrollPane goalPane = new ScrollPane(missionGoal, skin);
-
 
         levelList.addListener(new ClickListener() {
             @Override
@@ -84,13 +80,9 @@ public class LevelSelectScreen implements Screen {
                         missionBriefing.setText(Strings.level5);
                         missionGoal.setText(Strings.levelGoal5);
                         break;
-
                 }
-
-
             }
         });
-
 
         //Play button
         TextButton play = new TextButton("PLAY", skin);
@@ -103,7 +95,7 @@ public class LevelSelectScreen implements Screen {
                         switch (levelList.getSelectedIndex())
                         {
                             case 0:
-                                game.setScreen(game.level1Screen);
+                                game.setScreen(new Level1Screen(game));
                                 break;
                             case 1:
                                 // ((Game) Gdx.app.getApplicationListener()).setScreen(new Level2Screen());
@@ -117,14 +109,11 @@ public class LevelSelectScreen implements Screen {
                             case 4:
                                 // ((Game) Gdx.app.getApplicationListener()).setScreen(new Level5Screen());
                                 break;
-
-
                         }
                     }
                 })));
             }
         });
-
 
         //Set up Table
         table.add(new Label("SELECT LEVEL", skin, "bigWhite")).colspan(3)
@@ -135,14 +124,14 @@ public class LevelSelectScreen implements Screen {
         nest1.add(new Label("Mission Briefing: ", skin, "smallWhite")).left().bottom().row();
         nest1.add(levelPane).width(200).spaceLeft(100).pad(10).maxHeight(Gdx.graphics.getHeight() * .65f);
         nest1.add(missionBriefingPane).expandX().fillX().width(Gdx.graphics.getWidth() - 300)
-                .height(Gdx.graphics.getHeight() / 2).maxHeight(Gdx.graphics.getHeight() * .65f).row();
+                .height(Gdx.graphics.getHeight()/2).maxHeight(Gdx.graphics.getHeight() * .65f).row();
 
         table.add(nest1).colspan(3).row();
         table.add().expandX().spaceBottom(10).row();
 
         Table nest2 = new Table(skin);
         nest2.add(new Label("Mission Goals: ", skin, "smallWhite")).left().bottom().row();
-        nest2.add(goalPane).width(Gdx.graphics.getWidth() -300)
+        nest2.add(goalPane).width(Gdx.graphics.getWidth() - 300)
                 .height(100).spaceRight(10);
         nest2.add(play).height(100);
 
@@ -150,9 +139,7 @@ public class LevelSelectScreen implements Screen {
 
         stage.addActor(table);
         stage.addAction(sequence(moveTo(0, stage.getHeight()), moveTo(0, 0, .5f))); // coming in from top animation
-
     }
-
 
     @Override
     public void render(float delta) {
@@ -162,8 +149,6 @@ public class LevelSelectScreen implements Screen {
 
         stage.act(delta);
         stage.draw();
-
-
     }
 
     @Override
@@ -171,7 +156,6 @@ public class LevelSelectScreen implements Screen {
         stage.getViewport().update(width, height, true);
         //    screenBackground.setSize(width, height);
         table.invalidateHierarchy();
-
     }
 
     @Override
@@ -191,7 +175,7 @@ public class LevelSelectScreen implements Screen {
 
     @Override
     public void dispose() {
-
+        stage.dispose();
     }
 }
 

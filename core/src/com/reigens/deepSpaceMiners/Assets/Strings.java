@@ -17,7 +17,7 @@ public class Strings {
 
             "Good luck out there!";
     public static String levelGoal1 = "Collect 50 Asteroids!\n" +
-            "You have a small weak ship, so be careful it wont take much damage.";
+            "You have a small weak ship, so be careful it won't take much damage.";
 
     public static String level2 = "Coming Soon!";
     public static String levelGoal2 = "Coming Soon!";
@@ -29,7 +29,6 @@ public class Strings {
     public static String levelGoal5 = "Coming Soon!";
 
     public static String locked = "Locked Please Complete Lower Levels to Unlock This Level.";
-
 
     //Completed Mission
 

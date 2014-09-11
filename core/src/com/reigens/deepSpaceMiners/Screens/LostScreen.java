@@ -3,13 +3,14 @@ package com.reigens.deepSpaceMiners.Screens;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
-import com.reigens.deepSpaceMiners.Assets.Graphics;
+import com.reigens.deepSpaceMiners.Assets.Assets;
 import com.reigens.deepSpaceMiners.GameMain;
 
 import static com.badlogic.gdx.scenes.scene2d.actions.Actions.*;
@@ -19,13 +20,8 @@ import static com.badlogic.gdx.scenes.scene2d.actions.Actions.*;
  */
 public class LostScreen implements Screen {
     GameMain game;
-
-
-    private TextureAtlas uiAtlas;
     private Stage stage;
     private Table table;
-    private Skin skin;
-    private Image screenBackground;
 
     public LostScreen(GameMain game) {
         this.game = game;
@@ -36,13 +32,10 @@ public class LostScreen implements Screen {
         Gdx.input.setCatchBackKey(true);
         stage = new Stage();
         Gdx.input.setInputProcessor(stage);
-        Graphics.loadLevelSelectScreen();
-
-        uiAtlas = new TextureAtlas(Gdx.files.internal("ui/ui.pack"));
-        skin = new Skin(Gdx.files.internal("ui/Skin.json"), uiAtlas);
-        screenBackground = new Image(Graphics.texture_background);
+        Skin skin = new Skin(Gdx.files.internal("ui/Skin.json"), Assets.manager.get(Assets.uiAtlas, TextureAtlas.class));
+        Image screenBackground = new Image(Assets.manager.get(Assets.levelSelectScreenBackground, Texture.class));
+        screenBackground.setFillParent(true);
         stage.addActor(screenBackground);
-
         table = new Table(skin);
         table.setFillParent(true);
 
@@ -54,7 +47,7 @@ public class LostScreen implements Screen {
                 stage.addAction(sequence(moveTo(0, stage.getHeight(), .5f), run(new Runnable() {
                     @Override
                     public void run() {
-                        game.setScreen(game.levelSelectScreen);
+                        game.setScreen(new LevelSelectScreen(game));
                     }
                 })));
             }
@@ -68,12 +61,12 @@ public class LostScreen implements Screen {
                 stage.addAction(sequence(moveTo(0, stage.getHeight(), .5f), run(new Runnable() {
                     @Override
                     public void run() {
-                        game.setScreen(game.levelSelectScreen);
+                        //Todo
+                        game.setScreen(new LevelSelectScreen(game));
                     }
                 })));
             }
         });
-
 
         //Set up Table
         table.add(new Label("Try Again!", skin, "bigWhite")).top().padTop(20).expandX().spaceBottom(50).row();
@@ -81,18 +74,14 @@ public class LostScreen implements Screen {
         table.add(new Label("You just blew up your ship!", skin, "smallWhite")).top().padTop(20).expandX().spaceBottom(50).row();
         table.add(menuButton).spaceBottom(30).row();
         table.add(retryButton).row();
-
-
         stage.addActor(table);
-
-
     }
+
     @Override
     public void render(float delta) {
         delta = MathUtils.clamp(delta, 0, 1 / 30f);
         Gdx.gl.glClearColor(0, 0, 0, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-
         stage.act(delta);
         stage.draw();
     }
@@ -104,25 +93,19 @@ public class LostScreen implements Screen {
         table.invalidateHierarchy();
     }
 
-
-
     @Override
     public void hide() {
-
     }
 
     @Override
     public void pause() {
-
     }
 
     @Override
     public void resume() {
-
     }
 
     @Override
     public void dispose() {
-
     }
 }

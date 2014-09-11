@@ -6,16 +6,20 @@ import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.TimeUtils;
-import com.reigens.deepSpaceMiners.Assets.Graphics;
+import com.reigens.deepSpaceMiners.Assets.Assets;
 import com.reigens.deepSpaceMiners.Asteroids.RegularAsteroids;
 import com.reigens.deepSpaceMiners.GameMain;
 import com.reigens.deepSpaceMiners.Helper;
+import com.reigens.deepSpaceMiners.Screens.LostScreen;
+import com.reigens.deepSpaceMiners.Screens.PauseScreen;
+import com.reigens.deepSpaceMiners.Screens.WonScreen;
 import com.reigens.deepSpaceMiners.Ships.Ship1;
 import com.reigens.deepSpaceMiners.Ships.WormHole;
 
@@ -28,8 +32,8 @@ public class Level1Screen implements Screen {
     OrthographicCamera camera;
     float stateTime;
     public static SpriteBatch batch;
-    public int shipX = 960;
-    public int shipY = 540;
+     int shipX = Gdx.graphics.getWidth() / 2;
+     int shipY = Gdx.graphics.getHeight() / 2;
     Vector3 touch;
     BitmapFont blackFont, redFont;
     WormHole wormHole;
@@ -57,25 +61,19 @@ public class Level1Screen implements Screen {
     public Level1Screen(GameMain game) {
         this.game = game;
 
-
         //Initialize Variables and any other "run once" commands
         camera = new OrthographicCamera();
         camera.setToOrtho(false, 1920, 1080);
-        Graphics.loadLevel1();
-        Graphics.loadShip();
-        Graphics.loadAsteroid();
-        blackFont = new BitmapFont(Gdx.files.internal("font/black14.fnt"));
-        redFont = new BitmapFont(Gdx.files.internal("font/red14.fnt"));
+
+        blackFont = Assets.manager.get(Assets.black14, BitmapFont.class);
+        redFont = Assets.manager.get(Assets.red14, BitmapFont.class);
         stateTime = 0f;
         batch = new SpriteBatch();
         wormHole = new WormHole();
         ship = new Ship1();
         touch = new Vector3();
-        regularAsteroids = new RegularAsteroids();
+        regularAsteroids = new RegularAsteroids(game);
         smallRegularAsteroids = new Array<Rectangle>();
-        //  Regularasteroid.spawnasteroid();
-
-
     }
 
     @Override
@@ -87,29 +85,29 @@ public class Level1Screen implements Screen {
         generalUpdate(touch, camera);
 
         //Initialize graphics
-        wormHole.image = wormHole.wormHole_animation.getKeyFrame(stateTime, true);
-            if (gameState == true)
-        regularAsteroids.image = RegularAsteroids.animation.getKeyFrame(stateTime, true);
+        WormHole.image = WormHole.wormHole_animation.getKeyFrame(stateTime, true);
+        if (gameState)
+            RegularAsteroids.image = RegularAsteroids.animation.getKeyFrame(stateTime, true);
 
-        ship.image.setSize(shipSizeX, shipSizeY);
-        ship.image.setCenter(shipX, shipY);
-        ship.image.setOriginCenter();
+        Ship1.image.setSize(shipSizeX, shipSizeY);
+        Ship1.image.setCenter(shipX, shipY);
+        Ship1.image.setOriginCenter();
 
         batch.setProjectionMatrix(camera.combined);
         batch.begin();
 
         //Draw Graphics on screen
-        batch.draw(Graphics.sprite_background, 0, 0, camera.viewportWidth, camera.viewportHeight);
+        batch.draw(Assets.manager.get(Assets.level1Background, Texture.class), 0, 0, camera.viewportWidth, camera.viewportHeight);
 
-        for (Rectangle smallRegasteroid : smallRegularAsteroids)
+        for (Rectangle smallRegAsteroid : smallRegularAsteroids)
         {
-            batch.draw(regularAsteroids.image, smallRegasteroid.x, smallRegasteroid.y,
-                    regularAsteroids.bounds.width, regularAsteroids.bounds.height);
+            batch.draw(RegularAsteroids.image, smallRegAsteroid.x, smallRegAsteroid.y,
+                    RegularAsteroids.bounds.width, RegularAsteroids.bounds.height);
         }
 
-        batch.draw(Graphics.sprite_scorePanelLeft, 0, 880, 650, 200);
-        batch.draw(Graphics.sprite_scorePanelRight, 1270, 880, 650, 200);
-        batch.draw(Graphics.sprite_topBar, 650, 880, 620, 200);
+        batch.draw(Assets.manager.get(Assets.hudLeftPanel, Texture.class), 0, 880, 650, 200);
+        batch.draw(Assets.manager.get(Assets.hudRightPanel, Texture.class), 1270, 880, 650, 200);
+        batch.draw(Assets.manager.get(Assets.hudTopBar, Texture.class), 650, 880, 620, 200);
         blackFont.setScale(3f, 4f);
         blackFont.draw(batch, "Collected: " + asteroidsGathered, 110, 1040);
         blackFont.draw(batch, "Speed: " + fallSpeed, 1500, 1040);
@@ -118,9 +116,8 @@ public class Level1Screen implements Screen {
         redFont.setColor(Color.RED);
         redFont.draw(batch, "Missed: " + asteroidsMissed, 210, 980);
 
-        batch.draw(wormHole.image, wormHole.bounds.x, wormHole.bounds.y, wormHole.bounds.width, wormHole.bounds.height);
-
-        ship.image.draw(batch);
+        batch.draw(WormHole.image, WormHole.bounds.x, WormHole.bounds.y, WormHole.bounds.width, WormHole.bounds.height);
+        Ship1.image.draw(batch);
 
         //End batch "all graphics above this"
         batch.end();
@@ -135,8 +132,8 @@ public class Level1Screen implements Screen {
             asteroidsMissed = 0;
             fallSpeed = startingSpeed;
             shipHull = startingHull;
-            shipX = 960;
-            shipY = 540;
+            shipX = Gdx.graphics.getWidth()/2;
+            shipY = Gdx.graphics.getHeight()/2;
             smallRegularAsteroids.clear();
         }
 
@@ -148,13 +145,12 @@ public class Level1Screen implements Screen {
         {
             gameState = true;
         }
-
     }
 
     public void generalUpdate(Vector3 touch, OrthographicCamera camera) {
-        ship.image.setRotation(0);
-        wormHole.bounds.x = shipX - ship.image.getWidth();
-        wormHole.bounds.y = shipY + 75;
+        Ship1.image.setRotation(0);
+        WormHole.bounds.x = shipX - Ship1.image.getWidth();
+        WormHole.bounds.y = shipY + 75;
         if (gameState == true && Gdx.input.isTouched())
         {
             touch.set(Gdx.input.getX(), Gdx.input.getY(), 0);
@@ -163,25 +159,23 @@ public class Level1Screen implements Screen {
             Float degrees = (float) ((Math.atan2(touch.x - shipX,
                     -(touch.y - shipY)) * 180.0d / Math.PI) - 180.0f);
 
-
             // Sets the X,Y for the wormHole
-            wormHole.bounds.setPosition(shipX * touch.x, shipY * touch.y);
+            WormHole.bounds.setPosition(shipX * touch.x, shipY * touch.y);
 
             // Check to see if ship was touched and update its X,Y if it was
-            if (ship.image.getBoundingRectangle().contains(touch.x, touch.y))
+            if (Ship1.image.getBoundingRectangle().contains(touch.x, touch.y))
             {
                 //  wormHole.bounds.setSize(256,256);
                 //  wormHole.bounds.setX(shipX - ship.image.getWidth() * 50);
 
                 shipX = (int) touch.x;
                 shipY = (int) touch.y;
-                ship.image.setOriginCenter();
-                ship.image.setRotation(degrees);
+                Ship1.image.setOriginCenter();
+                Ship1.image.setRotation(degrees);
             }
         }
-        wormHole.bounds.setSize(256, 256);
-        wormHole.bounds.x = shipX - wormHole.bounds.getWidth() / 2;
-
+        WormHole.bounds.setSize(256, 256);
+        WormHole.bounds.x = shipX - WormHole.bounds.getWidth() / 2;
 
         //Keyboard Keys input - not needed  "testing purposes only"
         if (Gdx.input.isKeyJustPressed(Input.Keys.UP))
@@ -202,9 +196,9 @@ public class Level1Screen implements Screen {
         {
             shipX = 1;
         }
-        if (shipX > camera.viewportWidth - ship.image.getWidth())
+        if (shipX > camera.viewportWidth - Ship1.image.getWidth())
         {
-            shipX = (int) camera.viewportWidth - (int) ship.image.getWidth();
+            shipX = (int) camera.viewportWidth - (int) Ship1.image.getWidth();
         }
         if (shipY < 1)
         {
@@ -212,10 +206,10 @@ public class Level1Screen implements Screen {
         }
 
         // Sets Spawn rate for asteroids
-        if (gameState == true && TimeUtils.millis() - lastDropTime > asteroidRate) RegularAsteroids.spawnasteroid();
+        if (gameState && TimeUtils.millis() - lastDropTime > asteroidRate) RegularAsteroids.spawnAsteroid();
 
         // Sets Speed of asteroids
-        if (gameState == true && TimeUtils.millis() - speedTime > speedRate)
+        if (gameState && TimeUtils.millis() - speedTime > speedRate)
         {
             if (fallSpeed < maxSpeed)
                 fallSpeed += 5;
@@ -225,42 +219,52 @@ public class Level1Screen implements Screen {
         java.util.Iterator<Rectangle> iter = smallRegularAsteroids.iterator();
         while (iter.hasNext())
         {
-            Rectangle smallRegasteroid = iter.next();
-            smallRegasteroid.y -= fallSpeed * Gdx.graphics.getDeltaTime();
+            Rectangle smallRegAsteroid = iter.next();
+            smallRegAsteroid.y -= fallSpeed * Gdx.graphics.getDeltaTime();
 
-            if (smallRegasteroid.y + 64 < 0)
+            if (smallRegAsteroid.y + 64 < 0)
             {
                 asteroidsMissed++;
                 iter.remove();
             }
-            if (smallRegasteroid.overlaps(WormHole.bounds))
+            if (smallRegAsteroid.overlaps(WormHole.bounds))
             {
-                if (asteroidsGathered == asteroidsToWin - 1){
+                if (asteroidsGathered == asteroidsToWin - 1)
+                {
                     //Go to Win Screen
                     iter.remove();
                     setGameState(false, true);
-                    game.setScreen(game.wonScreen);
-
-
-            }else if (asteroidsGathered <= asteroidsToWin)
+                    game.setScreen(new WonScreen(game));
+                }
+                else if (asteroidsGathered <= asteroidsToWin)
                 {
                     asteroidsGathered++;
                     iter.remove();
                 }
             }
-            if (smallRegasteroid.overlaps(ship.image.getBoundingRectangle()))
+            if (smallRegAsteroid.overlaps(Ship1.image.getBoundingRectangle()))
             {
-                Helper.Log("Ship hit" + smallRegasteroid);
+                Helper.Log("Ship hit" + smallRegAsteroid);
                 shipHull--;
                 if (shipHull <= 0)
                 {
                     // to be replaced by lose screen ****************
-                    game.setScreen(game.levelSelectScreen);
+                    game.setScreen(new LostScreen(game));
                 }
-
             }
         }
+    }
 
+    @Override
+    public void hide() {
+        setGameState(false, false);
+    }
+
+    @Override
+    public void pause() {
+
+        game.setScreen(new PauseScreen(game));
+        setGameState(false, false);
     }
 
     @Override
@@ -272,34 +276,14 @@ public class Level1Screen implements Screen {
     public void show() {
         Gdx.input.setCatchBackKey(true);
         setGameState(true, true);
-
-
-    }
-
-    @Override
-    public void hide() {
-        setGameState(false, false);
-    }
-
-    @Override
-    public void pause() {
-        game.pauseScreen.show();
-        game.pauseScreen.resume();
-        game.setScreen(game.pauseScreen);
-        setGameState(false, false);
-
     }
 
     @Override
     public void resume() {
         setGameState(true, false);
-
     }
 
     @Override
     public void dispose() {
-        Graphics.disposeLevel1();
-        Graphics.disposeasteroid();
-        Graphics.disposeShip();
     }
 }
