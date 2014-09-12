@@ -16,12 +16,12 @@ import com.badlogic.gdx.utils.TimeUtils;
 import com.reigens.deepSpaceMiners.Assets.Assets;
 import com.reigens.deepSpaceMiners.Asteroids.RegularAsteroids;
 import com.reigens.deepSpaceMiners.GameMain;
-import com.reigens.deepSpaceMiners.Helper;
 import com.reigens.deepSpaceMiners.Screens.LostScreen;
 import com.reigens.deepSpaceMiners.Screens.PauseScreen;
 import com.reigens.deepSpaceMiners.Screens.WonScreen;
 import com.reigens.deepSpaceMiners.Ships.Ship1;
 import com.reigens.deepSpaceMiners.Ships.WormHole;
+import com.reigens.deepSpaceMiners.Uitilitys.LogHelper;
 
 /**
  * Created by Richard Reigens on 9/6/2014.
@@ -244,7 +244,7 @@ public class Level1Screen implements Screen {
             }
             if (smallRegAsteroid.overlaps(Ship1.image.getBoundingRectangle()))
             {
-                Helper.Log("Ship hit" + smallRegAsteroid);
+                LogHelper.Log("Ship hit" + smallRegAsteroid);
                 shipHull--;
                 if (shipHull <= 0)
                 {

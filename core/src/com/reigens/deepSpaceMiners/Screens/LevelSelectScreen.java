@@ -13,6 +13,7 @@ import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.reigens.deepSpaceMiners.Assets.Assets;
 import com.reigens.deepSpaceMiners.Assets.Strings;
 import com.reigens.deepSpaceMiners.GameMain;
+import com.reigens.deepSpaceMiners.Screens.Levels.Level1B2D;
 import com.reigens.deepSpaceMiners.Screens.Levels.Level1Screen;
 
 import static com.badlogic.gdx.scenes.scene2d.actions.Actions.*;
@@ -49,7 +50,7 @@ public class LevelSelectScreen implements Screen {
         final Label missionGoal = new Label(levelGoal, skin, "fieldSmall");
         missionGoal.setWrap(true);
         final List<String> levelList = new List<String>(skin);
-        levelList.setItems("Level 1", "Level 2", "Level 3", "Level 4", "Level 5");
+        levelList.setItems("B2D Test", "Level 1", "Level 3", "Level 4", "Level 5");
         ScrollPane levelPane = new ScrollPane(levelList, skin);
         ScrollPane missionBriefingPane = new ScrollPane(missionBriefing, skin);
         missionBriefingPane.setFadeScrollBars(false);
@@ -58,8 +59,7 @@ public class LevelSelectScreen implements Screen {
         levelList.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                switch (levelList.getSelectedIndex())
-                {
+                switch (levelList.getSelectedIndex()) {
                     case 0:
                         missionBriefing.setText(Strings.level1);
                         missionGoal.setText(Strings.levelGoal1);
@@ -92,13 +92,12 @@ public class LevelSelectScreen implements Screen {
                 stage.addAction(sequence(moveTo(0, stage.getHeight(), .5f), run(new Runnable() {
                     @Override
                     public void run() {
-                        switch (levelList.getSelectedIndex())
-                        {
-                            case 0:
+                        switch (levelList.getSelectedIndex()) {
+                            case 1:
                                 game.setScreen(new Level1Screen(game));
                                 break;
-                            case 1:
-                                // ((Game) Gdx.app.getApplicationListener()).setScreen(new Level2Screen());
+                            case 0:
+                                game.setScreen(new Level1B2D(game));
                                 break;
                             case 2:
                                 // ((Game) Gdx.app.getApplicationListener()).setScreen(new Level3Screen());
@@ -124,7 +123,7 @@ public class LevelSelectScreen implements Screen {
         nest1.add(new Label("Mission Briefing: ", skin, "smallWhite")).left().bottom().row();
         nest1.add(levelPane).width(200).spaceLeft(100).pad(10).maxHeight(Gdx.graphics.getHeight() * .65f);
         nest1.add(missionBriefingPane).expandX().fillX().width(Gdx.graphics.getWidth() - 300)
-                .height(Gdx.graphics.getHeight()/2).maxHeight(Gdx.graphics.getHeight() * .65f).row();
+                .height(Gdx.graphics.getHeight() / 2).maxHeight(Gdx.graphics.getHeight() * .65f).row();
 
         table.add(nest1).colspan(3).row();
         table.add().expandX().spaceBottom(10).row();
