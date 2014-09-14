@@ -54,7 +54,7 @@ public class LostScreen implements Screen {
         });
 
         //Retry Level button
-        TextButton retryButton = new TextButton(" Next Level ", skin);
+        TextButton retryButton = new TextButton("Retry", skin);
         retryButton.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {

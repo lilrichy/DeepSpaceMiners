@@ -31,7 +31,7 @@ public class Assets {
 
     //Texture Strings
     public static final String smallRegAsteroid = "Asteroids/RegularAsteroid.png";
-    public static final String ship1 = "Ships/ship1.png";
+    public static final String ship1 = "Ships/ship1Single.png";
     public static final String wormhole = "Ships/wormHole.png";
     public static final String levelSelectScreenBackground = "LevelSelectScreen/background.png";
     public static final String level1Background = "Level1/background.png";
