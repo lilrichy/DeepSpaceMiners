@@ -127,7 +127,7 @@ public class Level1Screen implements Screen {
     public void setGameState(boolean running, boolean reset) {
         // Boolean running: to set state whether the game is currently playing or paused
         // Boolean reset: to reset the screen back to default values when game over.
-        if (reset == true) {
+        if (reset) {
             asteroidsGathered = 0;
             asteroidsMissed = 0;
             fallSpeed = startingSpeed;
@@ -137,19 +137,14 @@ public class Level1Screen implements Screen {
             smallRegularAsteroids.clear();
         }
 
-        if (running == false) {
-            gameState = false;
-        }
-        else if (running == true) {
-            gameState = true;
-        }
+        gameState = running;
     }
 
     public void generalUpdate(Vector3 touch, OrthographicCamera camera) {
         Ship1.image.setRotation(0);
         WormHole.bounds.x = shipX - Ship1.image.getWidth();
         WormHole.bounds.y = shipY + 75;
-        if (gameState == true && Gdx.input.isTouched()) {
+        if (gameState && Gdx.input.isTouched()) {
             touch.set(Gdx.input.getX(), Gdx.input.getY(), 0);
             camera.unproject(touch);
 
@@ -267,5 +262,6 @@ public class Level1Screen implements Screen {
 
     @Override
     public void dispose() {
+
     }
 }

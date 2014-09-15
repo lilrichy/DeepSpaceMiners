@@ -22,6 +22,7 @@ public class Ship1B2D {
         shipShape.setAsBox(height, width);
 
         shipFixtureDef.shape = shipShape;
+        shipFixtureDef.filter.groupIndex = 1;
 
         shipBody = world.createBody(bodyDef);
         shipBody.createFixture(shipFixtureDef);
@@ -31,8 +32,8 @@ public class Ship1B2D {
         wormholeShape.setPosition(new Vector2(x+height *2f, y-width*3.3f));
 
         wormholeFixtureDef.shape = wormholeShape;
-
+        wormholeFixtureDef.filter.groupIndex = 1;
         shipBody.createFixture(wormholeFixtureDef);
-
+        shipBody.setGravityScale(0.01f);
     }
 }
