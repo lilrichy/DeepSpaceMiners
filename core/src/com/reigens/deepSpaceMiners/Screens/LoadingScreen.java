@@ -10,6 +10,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
+import com.badlogic.gdx.utils.viewport.StretchViewport;
 import com.reigens.deepSpaceMiners.Assets.Assets;
 import com.reigens.deepSpaceMiners.GameMain;
 
@@ -28,7 +29,7 @@ public class LoadingScreen implements Screen {
     public LoadingScreen(GameMain game) {
         this.game = game;
         Assets.load();
-        stage = new Stage();
+        stage = new Stage(new StretchViewport(1920,1080));
         Texture splashTexture = new Texture(Gdx.files.internal("splash.png"));
         splash = new Image(splashTexture);
     }

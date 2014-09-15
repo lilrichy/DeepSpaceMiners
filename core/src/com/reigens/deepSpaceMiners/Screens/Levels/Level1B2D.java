@@ -14,7 +14,7 @@ import com.badlogic.gdx.physics.box2d.*;
 import com.badlogic.gdx.physics.box2d.joints.MouseJoint;
 import com.badlogic.gdx.physics.box2d.joints.MouseJointDef;
 import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.badlogic.gdx.scenes.scene2d.ui.Image;
+import com.badlogic.gdx.utils.TimeUtils;
 import com.badlogic.gdx.utils.viewport.StretchViewport;
 import com.reigens.deepSpaceMiners.Assets.Assets;
 import com.reigens.deepSpaceMiners.GameMain;
@@ -50,6 +50,12 @@ public class Level1B2D extends InputProcessorInterface implements Screen {
     private OrthographicCamera camera;
     private MouseJointDef mouseJointDef;
     private MouseJoint joint;
+    private Vector3 tmp = new Vector3();
+    private Vector2 tmp2 = new Vector2();
+    Texture background;
+    float currentBgY;
+    long lastTimeBg;
+
     private QueryCallback queryCallback = new QueryCallback() {
         @Override public boolean reportFixture(Fixture fixture) {
             if (! fixture.testPoint(tmp.x, tmp.y))
@@ -60,8 +66,6 @@ public class Level1B2D extends InputProcessorInterface implements Screen {
             return false;
         }
     };
-    private Vector3 tmp = new Vector3();
-    private Vector2 tmp2 = new Vector2();
 
     public Level1B2D(GameMain game) {
         this.game = game;
@@ -76,13 +80,13 @@ public class Level1B2D extends InputProcessorInterface implements Screen {
         batch = new SpriteBatch();
         Gdx.input.setInputProcessor(this);
         Gdx.input.setCatchBackKey(true);
-        Image screenBackground = new Image(Assets.manager.get(Assets.level1Background, Texture.class));
-        screenBackground.setFillParent(true);
-        stage.addActor(screenBackground);
         Hud.createHud(stage, asteroidsGathered, asteroidsMissed, shipHull, fallSpeed);
+        background = Assets.manager.get(Assets.level1ScrollingBG, Texture.class);
+        currentBgY = 0;
+        lastTimeBg = TimeUtils.nanoTime();
+
         BodyDef bodyDef = new BodyDef();
         FixtureDef wormholeFixtureDef = new FixtureDef(), shipFixtureDef = new FixtureDef();
-
         Body blankBody = world.createBody(bodyDef);
 
         //Ship properties
@@ -94,16 +98,14 @@ public class Level1B2D extends InputProcessorInterface implements Screen {
         wormholeFixtureDef.restitution = .4f;
         Ship1B2D ship = new Ship1B2D(world, shipFixtureDef, wormholeFixtureDef, 0f, 1f, .45f, .5f);
 
-        B2DScreenBox.setupScreenBox(world, screenWidth, screenHeight);
-
-        System.out.println(screenWidth + " : " + screenHeight);
-
         world.createBody(bodyDef);
         //Mouse joint
         mouseJointDef = new MouseJointDef();
         mouseJointDef.bodyA = blankBody;
         mouseJointDef.collideConnected = true;
         mouseJointDef.maxForce = 500;
+
+        B2DScreenBox.setupScreenBox(world, screenWidth, screenHeight);
     }
 
     @Override
@@ -112,21 +114,36 @@ public class Level1B2D extends InputProcessorInterface implements Screen {
         Gdx.gl.glClearColor(0, 0, 0, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         stage.act(delta);
-        stage.draw();
+
         float TIMESTEP = 1 / 60f;
         int VELOCITYITERATIONS = 8;
         int POSITIONITERATIONS = 3;
         world.step(TIMESTEP, VELOCITYITERATIONS, POSITIONITERATIONS);
-        debugRenderer.render(world, camera.combined);
+        // debugRenderer.render(world, camera.combined);
 
-        camera.update();
+        // move the separator each 1s
+        if (TimeUtils.nanoTime() - lastTimeBg > 100000000) {
+            // move the separator
+            currentBgY -= .01f;
+            // set the current time to lastTimeBg
+            lastTimeBg = TimeUtils.nanoTime();
+        }
+
+        // if the seprator reaches the screen edge, move it back to the first position
+        if (currentBgY <= - screenHeight / 50 * .5f) {
+            currentBgY = screenHeight / 50 * .5f;
+        }
+
         batch.setProjectionMatrix(camera.combined);
-
         batch.begin();
+        // draw the first background
+        batch.draw(background, - screenWidth / 100 * .5f, currentBgY, screenWidth / 100, screenHeight / 50);
+        // draw the second background
+        batch.draw(background, - screenWidth / 100 * .5f, currentBgY - screenHeight / 50, screenWidth / 100, screenHeight / 50);
         Box2DSprite.draw(batch, world);
-
         batch.end();
-
+        stage.draw();
+        camera.update();
     }
 
     @Override public boolean touchDown(int screenX, int screenY, int pointer, int button) {
@@ -204,6 +221,7 @@ public class Level1B2D extends InputProcessorInterface implements Screen {
         world.dispose();
         debugRenderer.dispose();
         stage.dispose();
-
+        background.dispose();
+        batch.dispose();
     }
 }

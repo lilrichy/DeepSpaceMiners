@@ -32,6 +32,7 @@ public class Assets {
     public static final String wormhole = "Ships/wormHole/wormHole.png";
     public static final String levelSelectScreenBackground = "LevelSelectScreen/background.png";
     public static final String level1Background = "Level1/background.png";
+    public static final String level1ScrollingBG = "Level1/lvl1ConstantBG.png";
     public static final String hudLeftPanel = "Level1/hudLeftPanel.png";
     public static final String hudRightPanel = "Level1/hudRightPanel.png";
     public static final String hudTopBar = "Level1/topBar.png";
@@ -51,6 +52,7 @@ public class Assets {
         manager.load(levelSelectScreenBackground, Texture.class);
         //Level 1 Textures
         manager.load(level1Background, Texture.class);
+        manager.load(level1ScrollingBG, Texture.class);
         manager.load(hudLeftPanel, Texture.class);
         manager.load(hudRightPanel, Texture.class);
         manager.load(hudTopBar, Texture.class);

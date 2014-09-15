@@ -10,6 +10,7 @@ import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
+import com.badlogic.gdx.utils.viewport.StretchViewport;
 import com.reigens.deepSpaceMiners.Assets.Assets;
 import com.reigens.deepSpaceMiners.GameMain;
 
@@ -30,7 +31,7 @@ public class WonScreen implements Screen {
     @Override
     public void show() {
         Gdx.input.setCatchBackKey(true);
-        stage = new Stage();
+        stage = new Stage(new StretchViewport(1920,1080));
         Gdx.input.setInputProcessor(stage);
         Skin skin = new Skin(Gdx.files.internal("ui/Skin.json"), Assets.manager.get(Assets.uiAtlas, TextureAtlas.class));
         Image screenBackground = new Image(Assets.manager.get(Assets.levelSelectScreenBackground, Texture.class));

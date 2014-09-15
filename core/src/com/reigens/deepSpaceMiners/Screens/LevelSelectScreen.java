@@ -10,6 +10,7 @@ import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
+import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.reigens.deepSpaceMiners.Assets.Assets;
 import com.reigens.deepSpaceMiners.Assets.Strings;
 import com.reigens.deepSpaceMiners.GameMain;
@@ -35,7 +36,7 @@ public class LevelSelectScreen implements Screen {
 
     @Override
     public void show() {
-        stage = new Stage();
+        stage = new Stage(new ScreenViewport());
         Gdx.input.setInputProcessor(stage);
 
         Skin skin = new Skin(Gdx.files.internal("ui/Skin.json"), Assets.manager.get(Assets.uiAtlas, TextureAtlas.class));
@@ -154,6 +155,7 @@ public class LevelSelectScreen implements Screen {
     public void resize(int width, int height) {
         stage.getViewport().update(width, height, true);
         //    screenBackground.setSize(width, height);
+        stage.getViewport().apply();
         table.invalidateHierarchy();
     }
 

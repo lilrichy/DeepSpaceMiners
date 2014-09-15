@@ -7,6 +7,7 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.actions.Actions;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
+import com.badlogic.gdx.utils.viewport.StretchViewport;
 import com.reigens.deepSpaceMiners.GameMain;
 
 /**
@@ -20,7 +21,7 @@ public class Splash implements Screen {
 
     public Splash(GameMain game) {
         this.game = game;
-        stage = new Stage();
+        stage = new Stage(new StretchViewport(1920,1080));
         Texture splashTexture = new Texture(Gdx.files.internal("splash.png"));
         splash = new Image(splashTexture);
     }
