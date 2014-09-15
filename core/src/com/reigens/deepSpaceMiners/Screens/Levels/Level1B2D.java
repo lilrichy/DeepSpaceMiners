@@ -21,6 +21,7 @@ import com.reigens.deepSpaceMiners.GameMain;
 import com.reigens.deepSpaceMiners.Screens.LevelSelectScreen;
 import com.reigens.deepSpaceMiners.Screens.Levels.Ui.B2DScreenBox;
 import com.reigens.deepSpaceMiners.Screens.Levels.Ui.Hud;
+import com.reigens.deepSpaceMiners.Screens.PauseScreen;
 import com.reigens.deepSpaceMiners.Ships.Ship1B2D;
 import com.reigens.deepSpaceMiners.Uitilitys.InputProcessorInterface;
 import net.dermetfan.utils.libgdx.graphics.Box2DSprite;
@@ -80,6 +81,7 @@ public class Level1B2D extends InputProcessorInterface implements Screen {
         batch = new SpriteBatch();
         Gdx.input.setInputProcessor(this);
         Gdx.input.setCatchBackKey(true);
+        Gdx.input.setCatchMenuKey(true);
         Hud.createHud(stage, asteroidsGathered, asteroidsMissed, shipHull, fallSpeed);
         background = Assets.manager.get(Assets.level1ScrollingBG, Texture.class);
         currentBgY = 0;
@@ -181,6 +183,8 @@ public class Level1B2D extends InputProcessorInterface implements Screen {
             case Input.Keys.BACK:
                 game.setScreen(new LevelSelectScreen(game));
                 break;
+            case Input.Keys.MENU:
+                game.setScreen(new PauseScreen(game));
         }
         return true;
     }
