@@ -26,23 +26,20 @@ public class Assets {
     public static final String white32 = "font/white32.fnt";
     public static final String white64 = "font/white64.fnt";
 
-    //Skin Strings
-    public static final String skin = "ui/Skin.json";
-
     //Texture Strings
     public static final String smallRegAsteroid = "Asteroids/RegularAsteroid.png";
     public static final String ship1 = "Ships/ship1Single.png";
-    public static final String wormhole = "Ships/wormHole.png";
+    public static final String wormhole = "Ships/wormHole/wormHole.png";
     public static final String levelSelectScreenBackground = "LevelSelectScreen/background.png";
     public static final String level1Background = "Level1/background.png";
     public static final String hudLeftPanel = "Level1/hudLeftPanel.png";
     public static final String hudRightPanel = "Level1/hudRightPanel.png";
     public static final String hudTopBar = "Level1/topBar.png";
     public static final String uiAtlas = "ui/ui.pack";
+    public static final String wormholeAtlas = "Ships/wormHole/wormHole.pack";
 
     public static void load() {
         //    Texture.setAssetManager(manager);
-
 
         // Load Textures
         //Asteroids
@@ -79,7 +76,7 @@ public class Assets {
 
         // Load Atlas
         manager.load(uiAtlas, TextureAtlas.class);
-
+        manager.load(wormholeAtlas, TextureAtlas.class);
     }
 
     public static void dispose() {

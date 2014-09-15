@@ -29,30 +29,39 @@ import net.dermetfan.utils.libgdx.graphics.Box2DSprite;
  * Created by Richard Reigens on 9/12/2014.
  */
 public class Level1B2D extends InputProcessorInterface implements Screen {
-    GameMain game;
-    private World world;
-    private Stage stage;
-    private Box2DDebugRenderer debugRenderer;
-    private OrthographicCamera camera;
+    final int shipHull = 100;// Hull integrity Total - set same as startingHull but this value changes while playing
     public SpriteBatch batch;
-    private Box2DSprite shipSprite;
-    private Ship1B2D ship;
-    private MouseJointDef mouseJointDef;
-    private MouseJoint joint;
+    GameMain game;
     int asteroidsGathered;
     int asteroidsMissed;
     int screenWidth = Gdx.graphics.getWidth();
     int screenHeight = Gdx.graphics.getHeight();
-
     //Changeable Level Variables
     int startingHull = 100;// Default Hull integrity to reset to
-    int shipHull = 100;// Hull integrity Total - set same as startingHull but this value changes while playing
     int startingSpeed = 50;// Default Starting speed to reset to "same as fall speed"
     int fallSpeed = 50;// Starting Speed - Set same as startingSpeed, but this value changes while playing.
     int maxSpeed = 500;// Cap on asteroid speed - higher is faster
     int speedRate = 500;// Rate of speed increase - higher is slower increase over time
     int asteroidRate = 500;// Time in between asteroids - higher is less asteroids
     int asteroidsToWin = 50;// Number of asteroids required to win
+    private World world;
+    private Stage stage;
+    private Box2DDebugRenderer debugRenderer;
+    private OrthographicCamera camera;
+    private MouseJointDef mouseJointDef;
+    private MouseJoint joint;
+    private QueryCallback queryCallback = new QueryCallback() {
+        @Override public boolean reportFixture(Fixture fixture) {
+            if (! fixture.testPoint(tmp.x, tmp.y))
+                return true;
+            mouseJointDef.bodyB = fixture.getBody();
+            mouseJointDef.target.set(fixture.getBody().getWorldCenter());//tmp.x, tmp.y);
+            joint = (MouseJoint) world.createJoint(mouseJointDef);
+            return false;
+        }
+    };
+    private Vector3 tmp = new Vector3();
+    private Vector2 tmp2 = new Vector2();
 
     public Level1B2D(GameMain game) {
         this.game = game;
@@ -72,19 +81,18 @@ public class Level1B2D extends InputProcessorInterface implements Screen {
         stage.addActor(screenBackground);
         Hud.createHud(stage, asteroidsGathered, asteroidsMissed, shipHull, fallSpeed);
         BodyDef bodyDef = new BodyDef();
-        FixtureDef fixtureDef = new FixtureDef(), wormholeFixtureDef = new FixtureDef(),
-                shipFixtureDef = new FixtureDef();
+        FixtureDef wormholeFixtureDef = new FixtureDef(), shipFixtureDef = new FixtureDef();
 
         Body blankBody = world.createBody(bodyDef);
 
         //Ship properties
-        shipFixtureDef.density = 5f;
-        shipFixtureDef.friction = .4f;
+        shipFixtureDef.density = 1f;
+        shipFixtureDef.friction = 2f;
         shipFixtureDef.restitution = .3f;
-        wormholeFixtureDef.density = fixtureDef.density - .5f;
+        wormholeFixtureDef.density = 0f;
         wormholeFixtureDef.friction = 1;
         wormholeFixtureDef.restitution = .4f;
-         ship = new Ship1B2D(world, fixtureDef, wormholeFixtureDef, 0f, 1f, .3f, .4f);
+        Ship1B2D ship = new Ship1B2D(world, shipFixtureDef, wormholeFixtureDef, 0f, 1f, .45f, .5f);
 
         B2DScreenBox.setupScreenBox(world, screenWidth, screenHeight);
 
@@ -116,25 +124,10 @@ public class Level1B2D extends InputProcessorInterface implements Screen {
 
         batch.begin();
         Box2DSprite.draw(batch, world);
+
         batch.end();
 
-
     }
-
-    private Vector3 tmp = new Vector3();
-    private Vector2 tmp2 = new Vector2();
-    private Vector2 tmp3 = new Vector2();
-
-    private QueryCallback queryCallback = new QueryCallback() {
-        @Override public boolean reportFixture(Fixture fixture) {
-            if (! fixture.testPoint(tmp.x, tmp.y))
-                return true;
-            mouseJointDef.bodyB = fixture.getBody();
-            mouseJointDef.target.set(fixture.getBody().getWorldCenter());//tmp.x, tmp.y);
-            joint = (MouseJoint) world.createJoint(mouseJointDef);
-            return false;
-        }
-    };
 
     @Override public boolean touchDown(int screenX, int screenY, int pointer, int button) {
         camera.unproject(tmp.set(screenX, screenY, 0));
@@ -147,7 +140,7 @@ public class Level1B2D extends InputProcessorInterface implements Screen {
             return false;
         camera.unproject(tmp.set(screenX, screenY, 0));
         joint.setTarget(tmp2.set(tmp.x, tmp.y));
-        tmp3 = tmp2.sub(mouseJointDef.bodyB.getPosition());
+        Vector2 tmp3 = tmp2.sub(mouseJointDef.bodyB.getPosition());
         float angleTarget = (float) (Math.atan2(tmp3.y, tmp3.x));
         float bodyAngle = mouseJointDef.bodyB.getAngle();
         float angle = bodyAngle + (angleTarget - bodyAngle) * .3f;

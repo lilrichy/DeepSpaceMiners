@@ -14,10 +14,6 @@ import com.reigens.deepSpaceMiners.Assets.Assets;
  */
 public class Hud {
 
-    public Hud() {
-
-    }
-
     public static void createHud(Stage stage, int asteroidsGathered, int asteroidsMissed, int shipHull, int fallSpeed) {
         Skin skin = new Skin(Gdx.files.internal("ui/Skin.json"), Assets.manager.get(Assets.uiAtlas, TextureAtlas.class));
 

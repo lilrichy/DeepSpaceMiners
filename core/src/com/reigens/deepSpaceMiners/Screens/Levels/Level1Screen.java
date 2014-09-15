@@ -28,10 +28,12 @@ import com.reigens.deepSpaceMiners.Uitilitys.LogHelper;
  */
 
 public class Level1Screen implements Screen {
+    public static SpriteBatch batch;
+    public static Array<Rectangle> smallRegularAsteroids;
+    public static long lastDropTime;
     GameMain game;
     OrthographicCamera camera;
     float stateTime;
-    public static SpriteBatch batch;
     int shipX = Gdx.graphics.getWidth() / 2;
     int shipY = Gdx.graphics.getHeight() / 2;
     Vector3 touch;
@@ -39,14 +41,10 @@ public class Level1Screen implements Screen {
     WormHole wormHole;
     Ship1 ship;
     boolean gameState = true;
-
     RegularAsteroids regularAsteroids;
-    public static Array<Rectangle> smallRegularAsteroids;
     int asteroidsGathered;
     int asteroidsMissed;
     long speedTime = TimeUtils.millis();
-    public static long lastDropTime;
-
     //Changeable variables
     int shipSizeX = 64, shipSizeY = 64;// Ship Size
     int startingHull = 100;// Default Hull integrity to reset to
@@ -80,7 +78,6 @@ public class Level1Screen implements Screen {
     public void render(float delta) {
         Gdx.gl.glClearColor(1f, 1f, 1f, 1f);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-
 
         camera.update();
         stateTime += Gdx.graphics.getDeltaTime();
@@ -152,7 +149,7 @@ public class Level1Screen implements Screen {
                     - (touch.y - shipY)) * 180.0d / Math.PI) - 180.0f);
 
             // Sets the X,Y for the wormHole
-            WormHole.bounds.setPosition(shipX * touch.x, shipY+64);
+            WormHole.bounds.setPosition(shipX * touch.x, shipY + 64);
 
             // Check to see if ship was touched and update its X,Y if it was
             if (Ship1.image.getBoundingRectangle().contains(touch.x, touch.y)) {

@@ -22,7 +22,6 @@ public class LoadingScreen implements Screen {
     SpriteBatch batch;
     Texture emptyT, fullT;
     NinePatch empty, full;
-    Texture background;
     Stage stage;
     Image splash;
 
@@ -40,7 +39,6 @@ public class LoadingScreen implements Screen {
         splash.setFillParent(true);
         font = new BitmapFont(Gdx.files.internal(Assets.white32));
         batch = new SpriteBatch();
-        background = new Texture(Gdx.files.internal(Assets.levelSelectScreenBackground));
         emptyT = new Texture(Gdx.files.internal("Loading/empty.png"));
         fullT = new Texture(Gdx.files.internal("Loading/full.png"));
         empty = new NinePatch(new TextureRegion(emptyT, 24, 24), 8, 8, 8, 8);
@@ -56,12 +54,11 @@ public class LoadingScreen implements Screen {
         batch.begin();
 
         empty.draw(batch, Gdx.graphics.getWidth() / 4, 50, Gdx.graphics.getHeight(), 30);
-        full.draw(batch, Gdx.graphics.getWidth() / 4, 50, Assets.manager.getProgress() * Gdx.graphics.getWidth()/2, 30);
-        font.drawMultiLine(batch, (int) (Assets.manager.getProgress() * 100) + "% loaded", Gdx.graphics.getWidth()/2, 75, 0, BitmapFont.HAlignment.CENTER);
+        full.draw(batch, Gdx.graphics.getWidth() / 4, 50, Assets.manager.getProgress() * Gdx.graphics.getWidth() / 2, 30);
+        font.drawMultiLine(batch, (int) (Assets.manager.getProgress() * 100) + "% loaded", Gdx.graphics.getWidth() / 2, 75, 0, BitmapFont.HAlignment.CENTER);
         batch.end();
 
-        if (Assets.manager.update())
-        {
+        if (Assets.manager.update()) {
             // all the assets are loaded
             game.setScreen(new LevelSelectScreen(game));
         }

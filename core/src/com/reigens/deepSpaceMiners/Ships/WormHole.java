@@ -20,13 +20,11 @@ public class WormHole {
         bounds = new Rectangle(960, 500, 128, 128);
         image = current_frame;
         TextureRegion[][] Temp = TextureRegion.split(Assets.manager.get(Assets.wormhole, Texture.class), 32, 32);
-        wormHole_frames = new TextureRegion[20];
+        wormHole_frames = new TextureRegion[ 20 ];
         int index = 0;
-        for (int i = 0; i < 2; i++)
-        {
-            for (int j = 0; j < 10; j++)
-            {
-                wormHole_frames[index++] = Temp[i][j];
+        for (int i = 0; i < 2; i++) {
+            for (int j = 0; j < 10; j++) {
+                wormHole_frames[ index++ ] = Temp[ i ][ j ];
             }
         }
         wormHole_animation = new Animation(0.05f, wormHole_frames);

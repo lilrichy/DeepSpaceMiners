@@ -15,12 +15,12 @@ import com.reigens.deepSpaceMiners.Screens.Levels.Level1Screen;
  * Created by Richard Reigens on 9/6/2014.
  */
 public class RegularAsteroids {
-    static GameMain game;
     public static Rectangle bounds;
     public static TextureRegion image;
     public static TextureRegion[] frames;
     public static TextureRegion current_frame;
     public static Animation animation;
+    static GameMain game;
 
     public RegularAsteroids(GameMain game) {
         this.game = game;
@@ -37,13 +37,11 @@ public class RegularAsteroids {
 
         image = current_frame;
         TextureRegion[][] Temp = TextureRegion.split(Assets.manager.get(Assets.smallRegAsteroid, Texture.class), 64, 64);
-        frames = new TextureRegion[16];
+        frames = new TextureRegion[ 16 ];
         int index = 0;
-        for (int i = 0; i < 2; i++)
-        {
-            for (int j = 0; j < 8; j++)
-            {
-                frames[index++] = Temp[i][j];
+        for (int i = 0; i < 2; i++) {
+            for (int j = 0; j < 8; j++) {
+                frames[ index++ ] = Temp[ i ][ j ];
             }
         }
         animation = new Animation(0.1f, frames);
