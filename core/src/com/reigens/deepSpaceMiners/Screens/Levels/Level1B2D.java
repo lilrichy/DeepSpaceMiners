@@ -43,6 +43,7 @@ public class Level1B2D extends InputProcessorInterface implements Screen {
     int screenWidth = Gdx.graphics.getWidth();
     int screenHeight = Gdx.graphics.getHeight();
     float currentBgY = 0;
+    long lastSpawn = TimeUtils.millis();
     long lastTimeBg = TimeUtils.nanoTime();
     Array<Body> worldBodies = new Array<Body>();
     //Changeable Level Variables
@@ -123,6 +124,14 @@ public class Level1B2D extends InputProcessorInterface implements Screen {
         world.step(TIMESTEP, VELOCITYITERATIONS, POSITIONITERATIONS);
         sweepDeadBodies();
 
+        // Spawn Random Asteroids
+        if (TimeUtils.millis() - lastSpawn > 1000) {
+
+            AsteroidSmallB2D asteroid = new AsteroidSmallB2D(world, screenWidth, screenHeight);
+            // set the current time to lastTimeBg
+            lastSpawn = TimeUtils.millis();
+        }
+
         // move the separator each 1s
         if (TimeUtils.nanoTime() - lastTimeBg > 100000000) {
             // move the separator
@@ -147,7 +156,7 @@ public class Level1B2D extends InputProcessorInterface implements Screen {
         stage.act(delta);
         stage.draw();
         camera.update();
-        debugRenderer.render(world, camera.combined);
+        // debugRenderer.render(world, camera.combined);
     }
 
     public void sweepDeadBodies() {
@@ -199,7 +208,6 @@ public class Level1B2D extends InputProcessorInterface implements Screen {
                 break;
             case Input.Keys.ENTER:
             case Input.Keys.BACK:
-                AsteroidSmallB2D asteroid = new AsteroidSmallB2D(world, screenWidth, screenHeight);
         }
         return true;
     }
