@@ -31,7 +31,7 @@ public class LostScreen implements Screen {
     @Override
     public void show() {
         Gdx.input.setCatchBackKey(true);
-        stage = new Stage(new StretchViewport(1920,1080));
+        stage = new Stage(new StretchViewport(1920, 1080));
         Gdx.input.setInputProcessor(stage);
         Skin skin = new Skin(Gdx.files.internal("ui/Skin.json"), Assets.manager.get(Assets.uiAtlas, TextureAtlas.class));
         Image screenBackground = new Image(Assets.manager.get(Assets.levelSelectScreenBackground, Texture.class));

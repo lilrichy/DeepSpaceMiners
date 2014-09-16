@@ -13,8 +13,9 @@ import com.reigens.deepSpaceMiners.Assets.Assets;
  * Created by Richard Reigens on 9/14/2014.
  */
 public class Hud {
+    static Label integrityLabel, collectedLabel, missedLabel, speedLabel;
 
-    public static void createHud(Stage stage, int asteroidsGathered, int asteroidsMissed, int shipHull, int fallSpeed) {
+    public static void createHud(Stage stage, int fallSpeed, int missed, int gathered, int hull) {
         Skin skin = new Skin(Gdx.files.internal("ui/Skin.json"), Assets.manager.get(Assets.uiAtlas, TextureAtlas.class));
 
         //Left Panel
@@ -22,11 +23,11 @@ public class Hud {
         leftPanel.setPosition(0, 880);
         leftPanel.setSize(650, 200);
         stage.addActor(leftPanel);
-        Label collectedLabel = new Label("Collected: " + asteroidsGathered, skin);
+        collectedLabel = new Label("Collected: " + gathered, skin);
         collectedLabel.setPosition(110, 1000);
         collectedLabel.setFontScale(1.5f, 2.5f);
         stage.addActor(collectedLabel);
-        Label missedLabel = new Label("Missed: " + asteroidsMissed, skin);
+        missedLabel = new Label("Missed: " + missed, skin);
         missedLabel.setPosition(230, 930);
         missedLabel.setFontScale(1.5f, 2.5f);
         stage.addActor(missedLabel);
@@ -42,14 +43,29 @@ public class Hud {
         rightPanel.setPosition(1270, 880);
         rightPanel.setSize(650, 200);
         stage.addActor(rightPanel);
-        Label integrityLabel = new Label("Hull Integrity: " + shipHull, skin);
+        integrityLabel = new Label("Hull Integrity: " + hull, skin);
         integrityLabel.setPosition(1300, 1000);
         integrityLabel.setFontScale(1.5f, 2.5f);
         stage.addActor(integrityLabel);
-        Label speedLabel = new Label("Speed: " + fallSpeed, skin);
+        speedLabel = new Label("Speed: " + fallSpeed, skin);
         speedLabel.setPosition(1300, 930);
         speedLabel.setFontScale(1.5f, 2.5f);
         stage.addActor(speedLabel);
     }
 
+    public static void updateGathered(int gathered) {
+        collectedLabel.setText("Collected: " + gathered);
+    }
+
+    public static void updateMissed(int missed) {
+        missedLabel.setText("Missed: " + missed);
+    }
+
+    public static void updatedSpeed(int fallSpeed) {
+        speedLabel.setText("Speed: " + fallSpeed);
+    }
+
+    public static void updateHull(int hull) {
+        integrityLabel.setText("Hull Integrity: " + hull);
+    }
 }

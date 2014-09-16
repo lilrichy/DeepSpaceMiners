@@ -14,15 +14,19 @@ import com.badlogic.gdx.physics.box2d.*;
 import com.badlogic.gdx.physics.box2d.joints.MouseJoint;
 import com.badlogic.gdx.physics.box2d.joints.MouseJointDef;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.TimeUtils;
 import com.badlogic.gdx.utils.viewport.StretchViewport;
 import com.reigens.deepSpaceMiners.Assets.Assets;
+import com.reigens.deepSpaceMiners.Assets.Strings;
+import com.reigens.deepSpaceMiners.Asteroids.AsteroidSmallB2D;
 import com.reigens.deepSpaceMiners.GameMain;
 import com.reigens.deepSpaceMiners.Screens.LevelSelectScreen;
 import com.reigens.deepSpaceMiners.Screens.Levels.Ui.B2DScreenBox;
 import com.reigens.deepSpaceMiners.Screens.Levels.Ui.Hud;
 import com.reigens.deepSpaceMiners.Screens.PauseScreen;
 import com.reigens.deepSpaceMiners.Ships.Ship1B2D;
+import com.reigens.deepSpaceMiners.Uitilitys.ContactListenerInterface;
 import com.reigens.deepSpaceMiners.Uitilitys.InputProcessorInterface;
 import net.dermetfan.utils.libgdx.graphics.Box2DSprite;
 
@@ -30,13 +34,17 @@ import net.dermetfan.utils.libgdx.graphics.Box2DSprite;
  * Created by Richard Reigens on 9/12/2014.
  */
 public class Level1B2D extends InputProcessorInterface implements Screen {
-    final int shipHull = 100;// Hull integrity Total - set same as startingHull but this value changes while playing
+
+    public static long lastDropTime;
     public SpriteBatch batch;
     GameMain game;
-    int asteroidsGathered;
-    int asteroidsMissed;
+    int ASTEROIDSMISSED, ASTEROIDSGATHERED, HULL;
+
     int screenWidth = Gdx.graphics.getWidth();
     int screenHeight = Gdx.graphics.getHeight();
+    float currentBgY = 0;
+    long lastTimeBg = TimeUtils.nanoTime();
+    Array<Body> worldBodies = new Array<Body>();
     //Changeable Level Variables
     int startingHull = 100;// Default Hull integrity to reset to
     int startingSpeed = 50;// Default Starting speed to reset to "same as fall speed"
@@ -51,22 +59,21 @@ public class Level1B2D extends InputProcessorInterface implements Screen {
     private OrthographicCamera camera;
     private MouseJointDef mouseJointDef;
     private MouseJoint joint;
-    private Vector3 tmp = new Vector3();
-    private Vector2 tmp2 = new Vector2();
-    Texture background;
-    float currentBgY;
-    long lastTimeBg;
-
     private QueryCallback queryCallback = new QueryCallback() {
         @Override public boolean reportFixture(Fixture fixture) {
             if (! fixture.testPoint(tmp.x, tmp.y))
                 return true;
-            mouseJointDef.bodyB = fixture.getBody();
-            mouseJointDef.target.set(fixture.getBody().getWorldCenter());//tmp.x, tmp.y);
-            joint = (MouseJoint) world.createJoint(mouseJointDef);
+            if (fixture.getBody().getUserData() != null && fixture.getBody().getUserData() == Strings.SHIP) {
+                mouseJointDef.bodyB = fixture.getBody();
+                mouseJointDef.target.set(fixture.getBody().getWorldCenter());//tmp.x, tmp.y);
+                joint = (MouseJoint) world.createJoint(mouseJointDef);
+            }
             return false;
         }
     };
+    private Vector3 tmp = new Vector3();
+    private Vector2 tmp2 = new Vector2();
+    private Texture background;
 
     public Level1B2D(GameMain game) {
         this.game = game;
@@ -75,6 +82,7 @@ public class Level1B2D extends InputProcessorInterface implements Screen {
     @Override
     public void show() {
         world = new World(new Vector2(0, - 9.81f/*Gravity*/), true);
+        world.setContactListener(new ContactListenerInterface());
         debugRenderer = new Box2DDebugRenderer();
         stage = new Stage(new StretchViewport(1920, 1080));
         camera = new OrthographicCamera();
@@ -82,32 +90,25 @@ public class Level1B2D extends InputProcessorInterface implements Screen {
         Gdx.input.setInputProcessor(this);
         Gdx.input.setCatchBackKey(true);
         Gdx.input.setCatchMenuKey(true);
-        Hud.createHud(stage, asteroidsGathered, asteroidsMissed, shipHull, fallSpeed);
+        ContactListenerInterface.resetValues(startingHull);
+        ASTEROIDSGATHERED = ContactListenerInterface.ASTEROIDSGATHERED;
+        ASTEROIDSMISSED = ContactListenerInterface.ASTEROIDSMISSED;
+        HULL = ContactListenerInterface.HULLINTEGRITY;
+
+        Hud.createHud(stage, fallSpeed, ASTEROIDSMISSED, ASTEROIDSGATHERED, HULL);
+        B2DScreenBox.setupScreenBox(world, screenWidth, screenHeight);
         background = Assets.manager.get(Assets.level1ScrollingBG, Texture.class);
-        currentBgY = 0;
-        lastTimeBg = TimeUtils.nanoTime();
 
         BodyDef bodyDef = new BodyDef();
         FixtureDef wormholeFixtureDef = new FixtureDef(), shipFixtureDef = new FixtureDef();
-        Body blankBody = world.createBody(bodyDef);
-
-        //Ship properties
-        shipFixtureDef.density = 1f;
-        shipFixtureDef.friction = 2f;
-        shipFixtureDef.restitution = .3f;
-        wormholeFixtureDef.density = 0f;
-        wormholeFixtureDef.friction = 1;
-        wormholeFixtureDef.restitution = .4f;
         Ship1B2D ship = new Ship1B2D(world, shipFixtureDef, wormholeFixtureDef, 0f, 1f, .45f, .5f);
 
-        world.createBody(bodyDef);
         //Mouse joint
+        Body blankBody = world.createBody(bodyDef);
         mouseJointDef = new MouseJointDef();
         mouseJointDef.bodyA = blankBody;
         mouseJointDef.collideConnected = true;
         mouseJointDef.maxForce = 500;
-
-        B2DScreenBox.setupScreenBox(world, screenWidth, screenHeight);
     }
 
     @Override
@@ -115,13 +116,12 @@ public class Level1B2D extends InputProcessorInterface implements Screen {
         delta = MathUtils.clamp(delta, 0, 1 / 30f);
         Gdx.gl.glClearColor(0, 0, 0, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-        stage.act(delta);
 
         float TIMESTEP = 1 / 60f;
         int VELOCITYITERATIONS = 8;
         int POSITIONITERATIONS = 3;
         world.step(TIMESTEP, VELOCITYITERATIONS, POSITIONITERATIONS);
-        // debugRenderer.render(world, camera.combined);
+        sweepDeadBodies();
 
         // move the separator each 1s
         if (TimeUtils.nanoTime() - lastTimeBg > 100000000) {
@@ -144,8 +144,20 @@ public class Level1B2D extends InputProcessorInterface implements Screen {
         batch.draw(background, - screenWidth / 100 * .5f, currentBgY - screenHeight / 50, screenWidth / 100, screenHeight / 50);
         Box2DSprite.draw(batch, world);
         batch.end();
+        stage.act(delta);
         stage.draw();
         camera.update();
+        debugRenderer.render(world, camera.combined);
+    }
+
+    public void sweepDeadBodies() {
+        world.getBodies(worldBodies);
+        for (Body body : worldBodies) {
+            if (body.getUserData() != null && body.getUserData() == Strings.DELETE) {
+                if (! world.isLocked())
+                    world.destroyBody(body);
+            }
+        }
     }
 
     @Override public boolean touchDown(int screenX, int screenY, int pointer, int button) {
@@ -180,11 +192,14 @@ public class Level1B2D extends InputProcessorInterface implements Screen {
     public boolean keyDown(int keycode) {
         switch (keycode) {
             case Input.Keys.ESCAPE:
-            case Input.Keys.BACK:
                 game.setScreen(new LevelSelectScreen(game));
                 break;
             case Input.Keys.MENU:
                 game.setScreen(new PauseScreen(game));
+                break;
+            case Input.Keys.ENTER:
+            case Input.Keys.BACK:
+                AsteroidSmallB2D asteroid = new AsteroidSmallB2D(world, screenWidth, screenHeight);
         }
         return true;
     }
@@ -225,7 +240,7 @@ public class Level1B2D extends InputProcessorInterface implements Screen {
         world.dispose();
         debugRenderer.dispose();
         stage.dispose();
-        background.dispose();
+        //  background.dispose();
         batch.dispose();
     }
 }

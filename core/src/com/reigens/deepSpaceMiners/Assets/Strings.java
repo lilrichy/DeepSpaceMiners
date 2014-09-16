@@ -34,5 +34,9 @@ public class Strings {
 
     //Failed Missions
 
+    //Constant Variables
+    public static String SHIP = "Ship", WORMHOLE = "WormHole",
+            ASTEROID = "Asteroid", GROUND = "Ground", DELETE = "DELETE";
+
 }
 

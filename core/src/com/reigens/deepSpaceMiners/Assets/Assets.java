@@ -31,13 +31,15 @@ public class Assets {
     public static final String ship1 = "Ships/ship1Single.png";
     public static final String wormhole = "Ships/wormHole/wormHole.png";
     public static final String levelSelectScreenBackground = "LevelSelectScreen/background.png";
-    public static final String level1Background = "Level1/background.png";
     public static final String level1ScrollingBG = "Level1/lvl1ConstantBG.png";
     public static final String hudLeftPanel = "Level1/hudLeftPanel.png";
     public static final String hudRightPanel = "Level1/hudRightPanel.png";
     public static final String hudTopBar = "Level1/topBar.png";
+
+    //Texture Atlas Strings
     public static final String uiAtlas = "ui/ui.pack";
     public static final String wormholeAtlas = "Ships/wormHole/wormHole.pack";
+    public static final String smallRegAsteroidAtlas = "Asteroids/RegularAsteroid.pack";
 
     public static void load() {
         //    Texture.setAssetManager(manager);
@@ -51,11 +53,15 @@ public class Assets {
         //Level SelectScreen Textures
         manager.load(levelSelectScreenBackground, Texture.class);
         //Level 1 Textures
-        manager.load(level1Background, Texture.class);
         manager.load(level1ScrollingBG, Texture.class);
         manager.load(hudLeftPanel, Texture.class);
         manager.load(hudRightPanel, Texture.class);
         manager.load(hudTopBar, Texture.class);
+
+        // Load Atlas
+        manager.load(uiAtlas, TextureAtlas.class);
+        manager.load(wormholeAtlas, TextureAtlas.class);
+        manager.load(smallRegAsteroidAtlas, TextureAtlas.class);
 
         // Load Fonts
         manager.load(black14, BitmapFont.class);
@@ -71,14 +77,8 @@ public class Assets {
         manager.load(white32, BitmapFont.class);
         manager.load(white64, BitmapFont.class);
 
-        // Load Skin
-        // manager.load(skin, Skin.class);
-
         // Load Sounds
 
-        // Load Atlas
-        manager.load(uiAtlas, TextureAtlas.class);
-        manager.load(wormholeAtlas, TextureAtlas.class);
     }
 
     public static void dispose() {

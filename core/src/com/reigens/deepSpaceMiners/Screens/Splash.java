@@ -21,7 +21,7 @@ public class Splash implements Screen {
 
     public Splash(GameMain game) {
         this.game = game;
-        stage = new Stage(new StretchViewport(1920,1080));
+        stage = new Stage(new StretchViewport(1920, 1080));
         Texture splashTexture = new Texture(Gdx.files.internal("splash.png"));
         splash = new Image(splashTexture);
     }

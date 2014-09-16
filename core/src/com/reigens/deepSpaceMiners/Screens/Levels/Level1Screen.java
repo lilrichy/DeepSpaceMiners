@@ -96,7 +96,7 @@ public class Level1Screen implements Screen {
         batch.begin();
 
         //Draw Graphics on screen
-        batch.draw(Assets.manager.get(Assets.level1Background, Texture.class), 0, 0, camera.viewportWidth, camera.viewportHeight);
+        //  batch.draw(Assets.manager.get(Assets.level1Background, Texture.class), 0, 0, camera.viewportWidth, camera.viewportHeight);
 
         for (Rectangle smallRegAsteroid : smallRegularAsteroids) {
             batch.draw(RegularAsteroids.image, smallRegAsteroid.x, smallRegAsteroid.y,
