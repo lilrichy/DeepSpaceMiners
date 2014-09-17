@@ -22,7 +22,7 @@ public class AsteroidSmallB2D {
         Level1B2D.lastDropTime = TimeUtils.millis();
         float rand = MathUtils.random(- screenWidth / 100 * .5f, screenWidth / 100 * .5f);
 
-        float width = .3f, height = .3f;
+        float width = .4f, height = .4f;
         float y = screenHeight / 100 * .5f;
 
         BodyDef bodyDef = new BodyDef();
