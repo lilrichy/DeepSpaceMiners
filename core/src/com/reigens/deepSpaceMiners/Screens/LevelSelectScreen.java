@@ -15,7 +15,6 @@ import com.reigens.deepSpaceMiners.Assets.Assets;
 import com.reigens.deepSpaceMiners.Assets.Strings;
 import com.reigens.deepSpaceMiners.GameMain;
 import com.reigens.deepSpaceMiners.Screens.Levels.Level1B2D;
-import com.reigens.deepSpaceMiners.Screens.Levels.Level1Screen;
 
 import static com.badlogic.gdx.scenes.scene2d.actions.Actions.*;
 
@@ -51,7 +50,7 @@ public class LevelSelectScreen implements Screen {
         final Label missionGoal = new Label(levelGoal, skin, "fieldSmall");
         missionGoal.setWrap(true);
         final List<String> levelList = new List<String>(skin);
-        levelList.setItems("B2D Test", "Level 1", "Level 3", "Level 4", "Level 5");
+        levelList.setItems("Level 1","Level 2", "Level 3", "Level 4", "Level 5");
         ScrollPane levelPane = new ScrollPane(levelList, skin);
         ScrollPane missionBriefingPane = new ScrollPane(missionBriefing, skin);
         missionBriefingPane.setFadeScrollBars(false);
@@ -94,11 +93,11 @@ public class LevelSelectScreen implements Screen {
                     @Override
                     public void run() {
                         switch (levelList.getSelectedIndex()) {
-                            case 1:
-                                game.setScreen(new Level1Screen(game));
-                                break;
                             case 0:
                                 game.setScreen(new Level1B2D(game));
+                                break;
+                            case 1:
+                                //game.setScreen(new Level1Screen(game));
                                 break;
                             case 2:
                                 // ((Game) Gdx.app.getApplicationListener()).setScreen(new Level3Screen());

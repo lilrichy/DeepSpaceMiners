@@ -25,9 +25,17 @@ grey_panel
   orig: 100, 100
   offset: 0, 0
   index: -1
-selection
+selectionGreen
   rotate: false
   xy: 290, 8
+  size: 100, 100
+  split: 6, 6, 6, 6
+  orig: 100, 100
+  offset: 0, 0
+  index: -1
+selectionRed
+  rotate: false
+  xy: 390, 8
   size: 100, 100
   split: 6, 6, 6, 6
   orig: 100, 100
@@ -42,28 +50,35 @@ grey_sliderHorizontal
   index: -1
 grey_sliderVertical
   rotate: false
-  xy: 390, 8
+  xy: 490, 8
   size: 4, 100
   orig: 4, 100
   offset: 0, 0
   index: -1
 closeButtonDown
   rotate: false
-  xy: 394, 63
+  xy: 494, 63
   size: 49, 45
   orig: 49, 45
   offset: 0, 0
   index: -1
 closeButtonUp
   rotate: false
-  xy: 394, 18
+  xy: 494, 18
   size: 49, 45
   orig: 49, 45
   offset: 0, 0
   index: -1
+grey_sliderEnd
+  rotate: false
+  xy: 543, 98
+  size: 8, 10
+  orig: 8, 10
+  offset: 0, 0
+  index: -1
 red_cross
   rotate: false
-  xy: 394, 0
+  xy: 494, 0
   size: 18, 18
   orig: 18, 18
   offset: 0, 0
@@ -77,15 +92,8 @@ grey_arrowDownGrey
   index: -1
 grey_arrowUpGrey
   rotate: false
-  xy: 412, 8
+  xy: 512, 8
   size: 15, 10
   orig: 15, 10
-  offset: 0, 0
-  index: -1
-grey_sliderEnd
-  rotate: false
-  xy: 443, 98
-  size: 8, 10
-  orig: 8, 10
   offset: 0, 0
   index: -1

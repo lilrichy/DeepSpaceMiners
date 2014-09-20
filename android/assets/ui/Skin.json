@@ -34,13 +34,18 @@
 	    exit: { up: closeButtonUp, down: closeButtonDown, pressedOffsetX: 1, pressedOffsetY: -1 },
 	},
 	com.badlogic.gdx.scenes.scene2d.ui.List$ListStyle: {
-		default: { font: white32, fontColorUnselected: white, fontColorSelected: black, selection: selection }
+		default: { font: white32, fontColorUnselected: white, fontColorSelected: black, selection: selectionGreen }
 	},
 	com.badlogic.gdx.scenes.scene2d.ui.ScrollPane$ScrollPaneStyle: {
-		default: { hScrollKnob: grey_sliderHorizontal, vScrollKnob: grey_sliderVertical, background: selection}
+		default: { hScrollKnob: grey_sliderHorizontal, vScrollKnob: grey_sliderVertical, background: selectionGreen}
 	},
     com.badlogic.gdx.scenes.scene2d.ui.TextField$TextFieldStyle: {
         default: { font: black16 }
+    },
+    com.badlogic.gdx.scenes.scene2d.ui.Window$WindowStyle: {
+       default: { titleFont: white32, background: grey_panel, titleFontColor: white },
+       dialogRed: { titleFont: white64, background: grey_panel, titleFontColor: white, stageBackground: selectionRed },
+       dialogGreen: { titleFont: white64, background: grey_panel, titleFontColor: white, stageBackground: selectionGreen }
     }
 
 }
