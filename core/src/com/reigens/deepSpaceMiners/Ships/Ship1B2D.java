@@ -43,7 +43,7 @@ public class Ship1B2D {
 
         // Wormhole
         PolygonShape wormholeShape = new PolygonShape();
-        wormholeShape.setAsBox(height / 2, width, new Vector2(.5f, 0), 0);
+        wormholeShape.setAsBox(height / 2, width / 2, new Vector2(.85f, 0), 0);
 
         wormholeFixtureDef.shape = wormholeShape;
         wormholeFixtureDef.isSensor = true;

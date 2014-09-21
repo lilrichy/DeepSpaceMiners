@@ -144,7 +144,7 @@ public class Level1B2D extends InputProcessorInterface implements Screen {
 
         BodyDef bodyDef = new BodyDef();
         FixtureDef wormholeFixtureDef = new FixtureDef(), shipFixtureDef = new FixtureDef();
-        Ship1B2D ship = new Ship1B2D(world, shipFixtureDef, wormholeFixtureDef, 0f, 1f, .45f, .5f);
+        Ship1B2D ship = new Ship1B2D(world, shipFixtureDef, wormholeFixtureDef, 0f, 1f, .65f, .65f);
 
         //Mouse joint
         Body blankBody = world.createBody(bodyDef);
@@ -220,7 +220,7 @@ public class Level1B2D extends InputProcessorInterface implements Screen {
         Vector2 tmp3 = tmp2.sub(mouseJointDef.bodyB.getPosition());
         float angleTarget = (float) (Math.atan2(tmp3.y, tmp3.x));
         float bodyAngle = mouseJointDef.bodyB.getAngle();
-        float angle = bodyAngle + (angleTarget - bodyAngle) * .3f;
+        float angle = bodyAngle + (angleTarget - bodyAngle);
         mouseJointDef.bodyB.setTransform(mouseJointDef.bodyB.getPosition(), angle);
         return true;
     }
