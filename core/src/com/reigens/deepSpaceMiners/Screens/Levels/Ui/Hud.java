@@ -1,6 +1,7 @@
 package com.reigens.deepSpaceMiners.Screens.Levels.Ui;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.NinePatch;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
@@ -18,7 +19,7 @@ public class Hud {
     static Label integrityLabel, collectedLabel, missedLabel, shipFuel;
     static Texture barEmpty, barFull;
     static NinePatch empty, full;
-    static Image barFullImage;
+    static Image barFullImage, barEmptyImage;
 
     public static void createHud(Stage stage, int missed, int gathered, int hull, int fuel) {
         Skin skin = new Skin(Gdx.files.internal("ui/Skin.json"), Assets.manager.get(Assets.uiAtlas, TextureAtlas.class));
@@ -59,7 +60,7 @@ public class Hud {
         full = new NinePatch(new TextureRegion(barFull, 24, 24), 8, 8, 8, 8);
         empty = new NinePatch(new TextureRegion(barEmpty, 24, 24), 8, 8, 8, 8);
         barFullImage = new Image(full);
-        Image barEmptyImage = new Image(empty);
+        barEmptyImage = new Image(empty);
 
         barFullImage.setPosition(1460, 920);
         barEmptyImage.setPosition(1460, 920);
@@ -94,6 +95,8 @@ public class Hud {
         }
         if (barFullImage.getWidth() <= 8) {
             barFullImage.setWidth(8);
+            barEmptyImage.setColor(Color.RED);
+
         }
     }
 

@@ -12,6 +12,7 @@ public class ContactListenerInterface implements ContactListener {
     public static int HULLINTEGRITY;
     public static int ASTEROIDSMISSED;
     public static int ASTEROIDSGATHERED;
+    public static int SHIPDAMAGEPERHIT;
 
     public static void destroyAsteroid(Fixture F, Boolean missed) {
         F.getBody().setUserData(Strings.DELETE);
@@ -22,7 +23,7 @@ public class ContactListenerInterface implements ContactListener {
     }
 
     public static void shipHit() {
-        HULLINTEGRITY -= 10;
+        HULLINTEGRITY -= SHIPDAMAGEPERHIT;
         Hud.updateHull(HULLINTEGRITY);
     }
 
@@ -32,10 +33,11 @@ public class ContactListenerInterface implements ContactListener {
         Hud.updateGathered(ASTEROIDSGATHERED);
     }
 
-    public static void resetValues(int hullMax) {
+    public static void resetValues(int hullMax, int dmgPerHit) {
         ASTEROIDSGATHERED = 0;
         ASTEROIDSMISSED = 0;
         HULLINTEGRITY = hullMax;
+        SHIPDAMAGEPERHIT = dmgPerHit;
     }
 
     @Override public void beginContact(Contact contact) {

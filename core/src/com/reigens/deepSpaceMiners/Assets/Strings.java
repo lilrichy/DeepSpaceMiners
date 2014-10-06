@@ -19,8 +19,16 @@ public class Strings {
     public static String levelGoal1 = "Collect 50 Asteroids!\n" +
             "You have a small weak ship, so be careful it won't take much damage.";
 
-    public static String level2 = "Coming Soon!";
-    public static String levelGoal2 = "Coming Soon!";
+
+    public static String level2 = "Good job collecting those asteroids! With the resources you sent us we have been able to increase our production lines. Now we need you to gather some more but we need them fast.\n\n " +
+
+            " So we are going to send you to an asteroid system that moves at a much higher rate of speed. If you think you can handle it. \n\n" +
+
+            "But be careful of those asteroids because they will tear your ship up really fast if your get hit";
+    public static String levelGoal2 = "Collect 100 Asteroids\n" +
+            "Damage from fast moving asteroids is increased so use extra caution!";
+
+
     public static String level3 = "Coming Soon!";
     public static String levelGoal3 = "Coming Soon!";
     public static String level4 = "Coming Soon!";

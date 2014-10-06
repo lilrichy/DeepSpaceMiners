@@ -38,7 +38,6 @@ import net.dermetfan.utils.libgdx.graphics.Box2DSprite;
  */
 public class Level2 extends InputProcessorInterface implements Screen {
 
-    public static long lastDropTime;
     private SpriteBatch batch;
     GameMain game;
     private int ASTEROIDSMISSED = 0, ASTEROIDSGATHERED = 0, HULL = 100;
@@ -77,9 +76,10 @@ public class Level2 extends InputProcessorInterface implements Screen {
 
     private int fuelRate = 50;
     private int startingHull = 100;// Default Hull integrity to reset to
-    private int ateroidSpawnTime = 750;//Asteroid Spawn rate
+    private int dmgPerHit = 10; // Damage to ship per asteroid hit
+    private int ateroidSpawnTime = 550;//Asteroid Spawn rate
     private float asteroidGravity = .5f;
-    private int asteroidsToWin = 50;// Number of asteroids required to win
+    private int asteroidsToWin = 100;// Number of asteroids required to win
 
     public Level2(GameMain game) {
         this.game = game;
@@ -147,7 +147,7 @@ public class Level2 extends InputProcessorInterface implements Screen {
         Gdx.input.setInputProcessor(multiplexer);
         Gdx.input.setCatchBackKey(true);
         // Gdx.input.setCatchMenuKey(true);
-        ContactListenerInterface.resetValues(startingHull);
+        ContactListenerInterface.resetValues(startingHull, dmgPerHit);
 
         Hud.createHud(stage, ASTEROIDSMISSED, ASTEROIDSGATHERED, HULL, shipFuel);
         B2DScreenBox.setupScreenBox(world, screenWidth, screenHeight);

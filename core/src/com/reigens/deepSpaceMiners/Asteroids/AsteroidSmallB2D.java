@@ -20,7 +20,7 @@ public class AsteroidSmallB2D {
 
     public static void spawnAsteroid(World world, int screenWidth, int screenHeight, float gravity) {
 
-        Level1.lastDropTime = TimeUtils.millis();
+
         float rand = MathUtils.random(- screenWidth / 100 * .5f, screenWidth / 100 * .5f);
 
         float width = .9f, height = .9f;
