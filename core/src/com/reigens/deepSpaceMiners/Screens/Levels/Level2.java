@@ -79,7 +79,7 @@ public class Level2 extends InputProcessorInterface implements Screen {
     private int dmgPerHit = 10; // Damage to ship per asteroid hit
     private int ateroidSpawnTime = 550;//Asteroid Spawn rate
     private float asteroidGravity = .5f;
-    private int asteroidsToWin = 100;// Number of asteroids required to win
+    private int asteroidsToWin = 25;// Number of asteroids required to win
 
     public Level2(GameMain game) {
         this.game = game;
