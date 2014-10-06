@@ -17,7 +17,7 @@ import net.dermetfan.utils.libgdx.graphics.Box2DSprite;
  */
 public class Ship1B2D {
 
-    public Ship1B2D(World world, FixtureDef shipFixtureDef, FixtureDef wormholeFixtureDef,
+    public static void createShip(World world, FixtureDef shipFixtureDef, FixtureDef wormholeFixtureDef,
                     float x, float y, float width, float height) {
 
         BodyDef bodyDef = new BodyDef();
@@ -62,6 +62,8 @@ public class Ship1B2D {
 
         shipBody.setGravityScale(0.01f);
         shipBody.setUserData(Strings.SHIP);
+
+
 
         //Ship Sensor
         PolygonShape shipSensorShape = new PolygonShape();

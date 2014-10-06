@@ -14,7 +14,8 @@ import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.reigens.deepSpaceMiners.Assets.Assets;
 import com.reigens.deepSpaceMiners.Assets.Strings;
 import com.reigens.deepSpaceMiners.GameMain;
-import com.reigens.deepSpaceMiners.Screens.Levels.Level1B2D;
+import com.reigens.deepSpaceMiners.Screens.Levels.Level1;
+import com.reigens.deepSpaceMiners.Screens.Levels.Level2;
 
 import static com.badlogic.gdx.scenes.scene2d.actions.Actions.*;
 
@@ -32,6 +33,8 @@ public class LevelSelectScreen implements Screen {
     public LevelSelectScreen(GameMain game) {
         this.game = game;
     }
+
+
 
     @Override
     public void show() {
@@ -92,12 +95,13 @@ public class LevelSelectScreen implements Screen {
                 stage.addAction(sequence(moveTo(0, stage.getHeight(), .5f), run(new Runnable() {
                     @Override
                     public void run() {
+
                         switch (levelList.getSelectedIndex()) {
                             case 0:
-                                game.setScreen(new Level1B2D(game));
+                                game.setScreen(new Level1(game));
                                 break;
                             case 1:
-                                //game.setScreen(new Level1Screen(game));
+                                game.setScreen(new Level2(game));
                                 break;
                             case 2:
                                 // ((Game) Gdx.app.getApplicationListener()).setScreen(new Level3Screen());

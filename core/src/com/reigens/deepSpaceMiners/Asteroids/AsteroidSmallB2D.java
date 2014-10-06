@@ -8,7 +8,7 @@ import com.badlogic.gdx.physics.box2d.*;
 import com.badlogic.gdx.utils.TimeUtils;
 import com.reigens.deepSpaceMiners.Assets.Assets;
 import com.reigens.deepSpaceMiners.Assets.Strings;
-import com.reigens.deepSpaceMiners.Screens.Levels.Level1B2D;
+import com.reigens.deepSpaceMiners.Screens.Levels.Level1;
 import net.dermetfan.utils.libgdx.graphics.AnimatedBox2DSprite;
 import net.dermetfan.utils.libgdx.graphics.AnimatedSprite;
 
@@ -17,12 +17,13 @@ import net.dermetfan.utils.libgdx.graphics.AnimatedSprite;
  */
 public class AsteroidSmallB2D {
 
-    public AsteroidSmallB2D(World world, int screenWidth, int screenHeight) {
 
-        Level1B2D.lastDropTime = TimeUtils.millis();
+    public static void spawnAsteroid(World world, int screenWidth, int screenHeight, float gravity) {
+
+        Level1.lastDropTime = TimeUtils.millis();
         float rand = MathUtils.random(- screenWidth / 100 * .5f, screenWidth / 100 * .5f);
 
-        float width = .8f, height = .8f;
+        float width = .9f, height = .9f;
         float y = screenHeight / 100 * .5f;
 
         BodyDef bodyDef = new BodyDef();
@@ -51,7 +52,7 @@ public class AsteroidSmallB2D {
         Fixture asteroidFixture = asteroidBody.createFixture(asteroidFixtureDef);
         asteroidFixture.setUserData(asteroidAnimation);
 
-        asteroidBody.setGravityScale(0.05f);
+        asteroidBody.setGravityScale(gravity);
 
         //Asteroid Sensor
         PolygonShape asteroidSensorShape = new PolygonShape();

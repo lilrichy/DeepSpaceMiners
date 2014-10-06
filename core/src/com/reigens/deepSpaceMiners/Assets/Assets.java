@@ -35,6 +35,8 @@ public class Assets {
     public static final String hudLeftPanel = "Level1/hudLeftPanel.png";
     public static final String hudRightPanel = "Level1/hudRightPanel.png";
     public static final String hudTopBar = "Level1/topBar.png";
+    public static final String hudStatusBarEmpty = "Loading/empty.png";
+    public static final String hudStatusBarFull = "Loading/full.png";
 
     //Texture Atlas Strings
     public static final String uiAtlas = "ui/ui.pack";
@@ -57,6 +59,8 @@ public class Assets {
         manager.load(hudLeftPanel, Texture.class);
         manager.load(hudRightPanel, Texture.class);
         manager.load(hudTopBar, Texture.class);
+        manager.load(hudStatusBarEmpty, Texture.class);
+        manager.load(hudStatusBarFull, Texture.class);
 
         // Load Atlas
         manager.load(uiAtlas, TextureAtlas.class);

@@ -36,12 +36,12 @@ import net.dermetfan.utils.libgdx.graphics.Box2DSprite;
 /**
  * Created by Richard Reigens on 9/12/2014.
  */
-public class Level1B2D extends InputProcessorInterface implements Screen {
+public class Level1 extends InputProcessorInterface implements Screen {
 
     public static long lastDropTime;
     private SpriteBatch batch;
     GameMain game;
-    private int ASTEROIDSMISSED, ASTEROIDSGATHERED, HULL;
+    private int ASTEROIDSMISSED = 0, ASTEROIDSGATHERED = 0, HULL = 100;
     private World world;
     private Stage stage;
     private Skin skin;
@@ -49,7 +49,7 @@ public class Level1B2D extends InputProcessorInterface implements Screen {
     private int screenHeight = Gdx.graphics.getHeight();
     private float currentBgY = 0;
     private long lastSpawn = TimeUtils.millis();
-    private long lastTimeBg = TimeUtils.nanoTime();
+    private long lastTimeBg = TimeUtils.millis();
     private Array<Body> worldBodies = new Array<Body>();
     private Texture background;
     private Box2DDebugRenderer debugRenderer;
@@ -70,14 +70,18 @@ public class Level1B2D extends InputProcessorInterface implements Screen {
     };
     private Vector3 tmp = new Vector3();
     private Vector2 tmp2 = new Vector2();
+    private int shipFuel = 280;
 
     //Changeable Level Variables
     private boolean running = true;
+
+    private int fuelRate = 100;
     private int startingHull = 100;// Default Hull integrity to reset to
-    private int fallSpeed = 50;// Starting Speed - Set same as startingSpeed, but this value changes while playing.
+    private int ateroidSpawnTime = 1000;//Asteroid Spawn rate
+    private float asteroidGravity = 0.05f;
     private int asteroidsToWin = 50;// Number of asteroids required to win
 
-    public Level1B2D(GameMain game) {
+    public Level1(GameMain game) {
         this.game = game;
     }
 
@@ -87,10 +91,16 @@ public class Level1B2D extends InputProcessorInterface implements Screen {
             int VELOCITYITERATIONS = 8;
             int POSITIONITERATIONS = 3;
 
-            // Spawn Random Asteroids
-            if (TimeUtils.millis() - lastSpawn > 1000) {
+            // Burn Fuel
+            if (TimeUtils.millis() - lastTimeBg > fuelRate) {
+                shipFuel--;
+                Hud.updateFuel(shipFuel);
+            }
 
-                AsteroidSmallB2D asteroid = new AsteroidSmallB2D(world, screenWidth, screenHeight);
+            // Spawn Random Asteroids
+            if (TimeUtils.millis() - lastSpawn > ateroidSpawnTime) {
+
+                AsteroidSmallB2D.spawnAsteroid(world, screenWidth, screenHeight, asteroidGravity);
                 // set the current time to lastTimeBg
                 lastSpawn = TimeUtils.millis();
             }
@@ -98,11 +108,11 @@ public class Level1B2D extends InputProcessorInterface implements Screen {
             world.step(TIMESTEP, VELOCITYITERATIONS, POSITIONITERATIONS);
 
             // move the separator each 1s
-            if (TimeUtils.nanoTime() - lastTimeBg > 100000000) {
+            if (TimeUtils.millis() - lastTimeBg > 100) {
                 // move the separator
                 currentBgY -= .01f;
                 // set the current time to lastTimeBg
-                lastTimeBg = TimeUtils.nanoTime();
+                lastTimeBg = TimeUtils.millis();
             }
 
             // if the seprator reaches the screen edge, move it back to the first position
@@ -138,13 +148,13 @@ public class Level1B2D extends InputProcessorInterface implements Screen {
         // Gdx.input.setCatchMenuKey(true);
         ContactListenerInterface.resetValues(startingHull);
 
-        Hud.createHud(stage, fallSpeed, ASTEROIDSMISSED, ASTEROIDSGATHERED, HULL);
+        Hud.createHud(stage, ASTEROIDSMISSED, ASTEROIDSGATHERED, HULL, shipFuel);
         B2DScreenBox.setupScreenBox(world, screenWidth, screenHeight);
         background = Assets.manager.get(Assets.level1ScrollingBG, Texture.class);
 
         BodyDef bodyDef = new BodyDef();
         FixtureDef wormholeFixtureDef = new FixtureDef(), shipFixtureDef = new FixtureDef();
-        Ship1B2D ship = new Ship1B2D(world, shipFixtureDef, wormholeFixtureDef, 0f, 1f, .65f, .65f);
+        Ship1B2D.createShip(world, shipFixtureDef, wormholeFixtureDef, 0f, 1f, .7f, .7f);
 
         //Mouse joint
         Body blankBody = world.createBody(bodyDef);
@@ -167,8 +177,15 @@ public class Level1B2D extends InputProcessorInterface implements Screen {
             lose();
         }
 
-        if(ASTEROIDSGATHERED >= asteroidsToWin){
+        if (ASTEROIDSGATHERED >= asteroidsToWin) {
             win();
+        }
+
+        if (shipFuel<=10){
+            if (joint != null){
+                world.destroyJoint(joint);
+                mouseJointDef.bodyB.setTransform(mouseJointDef.bodyB.getPosition(), 1.57f);
+                joint = null;}
         }
 
         gameState();
@@ -179,17 +196,19 @@ public class Level1B2D extends InputProcessorInterface implements Screen {
         // debugRenderer.render(world, camera.combined);
     }
 
-    public void win() {running = false;
-        new Dialog("", skin, "dialogGreen") {
+    public void win() {
+        running = false;
+        new Dialog("", skin) {
             {
                 text("Congratulations! \n\n You have completed this Mission!" +
                         "\n\n Press back to go to main menu");
             }
-        }.show(stage);}
+        }.show(stage);
+    }
 
     public void lose() {
         running = false;
-        new Dialog("", skin, "dialogRed") {
+        new Dialog("", skin) {
             {
                 text("You just blew up your ship! \n\n Press back to go to main menu.");
             }
