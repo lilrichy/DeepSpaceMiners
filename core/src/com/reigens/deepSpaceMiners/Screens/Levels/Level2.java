@@ -1,9 +1,6 @@
 package com.reigens.deepSpaceMiners.Screens.Levels;
 
-import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Input;
-import com.badlogic.gdx.InputMultiplexer;
-import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.*;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
@@ -205,6 +202,11 @@ public class Level2 extends InputProcessorInterface implements Screen {
                         "\n\n Press back to go to main menu");
             }
         }.show(stage);
+
+        // Unlock the next Level
+        final Preferences prefs = Gdx.app.getPreferences("levelLocks");
+        prefs.putBoolean("Level 3", true);
+        prefs.flush();
     }
 
     public void lose() {

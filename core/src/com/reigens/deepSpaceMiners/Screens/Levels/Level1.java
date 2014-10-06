@@ -1,9 +1,6 @@
 package com.reigens.deepSpaceMiners.Screens.Levels;
 
-import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Input;
-import com.badlogic.gdx.InputMultiplexer;
-import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.*;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
@@ -80,7 +77,7 @@ public class Level1 extends InputProcessorInterface implements Screen {
     private int dmgPerHit = 5; // Damage to ship per asteroid hit
     private int ateroidSpawnTime = 1000;// Asteroid Spawn rate
     private float asteroidGravity = 0.05f;
-    private int asteroidsToWin = 10;// Number of asteroids required to win
+    private int asteroidsToWin = 20;// Number of asteroids required to win
 
     public Level1(GameMain game) {
         this.game = game;
@@ -205,6 +202,13 @@ public class Level1 extends InputProcessorInterface implements Screen {
                         "\n\n Press back to go to main menu");
             }
         }.show(stage);
+
+        // Unlock the next Level
+        final Preferences prefs = Gdx.app.getPreferences("levelLocks");
+        prefs.putBoolean("Level 2", true);
+        prefs.flush();
+
+
     }
 
     public void lose() {

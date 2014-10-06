@@ -1,6 +1,7 @@
 package com.reigens.deepSpaceMiners.Screens;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Preferences;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
@@ -34,12 +35,11 @@ public class LevelSelectScreen implements Screen {
         this.game = game;
     }
 
-
-
     @Override
     public void show() {
         stage = new Stage(new ScreenViewport());
         Gdx.input.setInputProcessor(stage);
+        final Preferences prefs = Gdx.app.getPreferences("levelLocks");
 
         Skin skin = new Skin(Gdx.files.internal("ui/Skin.json"), Assets.manager.get(Assets.uiAtlas, TextureAtlas.class));
         Image screenBackground = new Image(Assets.manager.get(Assets.levelSelectScreenBackground, Texture.class));
@@ -53,7 +53,7 @@ public class LevelSelectScreen implements Screen {
         final Label missionGoal = new Label(levelGoal, skin, "fieldSmall");
         missionGoal.setWrap(true);
         final List<String> levelList = new List<String>(skin);
-        levelList.setItems("Level 1","Level 2", "Level 3", "Level 4", "Level 5");
+        levelList.setItems("Level 1", "Level 2", "Level 3", "Level 4", "Level 5");
         ScrollPane levelPane = new ScrollPane(levelList, skin);
         ScrollPane missionBriefingPane = new ScrollPane(missionBriefing, skin);
         missionBriefingPane.setFadeScrollBars(false);
@@ -68,20 +68,44 @@ public class LevelSelectScreen implements Screen {
                         missionGoal.setText(Strings.levelGoal1);
                         break;
                     case 1:
-                        missionBriefing.setText(Strings.level2);
-                        missionGoal.setText(Strings.levelGoal2);
+                        if (prefs.getBoolean("Level 2") != true) {
+                            missionBriefing.setText(Strings.locked);
+                            missionGoal.setText(Strings.locked);
+                        }
+                        else {
+                            missionBriefing.setText(Strings.level2);
+                            missionGoal.setText(Strings.levelGoal2);
+                        }
                         break;
                     case 2:
-                        missionBriefing.setText(Strings.level3);
-                        missionGoal.setText(Strings.levelGoal3);
+                        if (prefs.getBoolean("Level 3") != true) {
+                            missionBriefing.setText(Strings.locked);
+                            missionGoal.setText(Strings.locked);
+                        }
+                        else {
+                            missionBriefing.setText(Strings.level3);
+                            missionGoal.setText(Strings.levelGoal3);
+                        }
                         break;
                     case 3:
-                        missionBriefing.setText(Strings.level4);
-                        missionGoal.setText(Strings.levelGoal4);
+                        if (prefs.getBoolean("Level 4") != true) {
+                            missionBriefing.setText(Strings.locked);
+                            missionGoal.setText(Strings.locked);
+                        }
+                        else {
+                            missionBriefing.setText(Strings.level4);
+                            missionGoal.setText(Strings.levelGoal4);
+                        }
                         break;
                     case 4:
-                        missionBriefing.setText(Strings.level5);
-                        missionGoal.setText(Strings.levelGoal5);
+                        if (prefs.getBoolean("Level 5") != true) {
+                            missionBriefing.setText(Strings.locked);
+                            missionGoal.setText(Strings.locked);
+                        }
+                        else {
+                            missionBriefing.setText(Strings.level5);
+                            missionGoal.setText(Strings.levelGoal5);
+                        }
                         break;
                 }
             }
@@ -101,16 +125,36 @@ public class LevelSelectScreen implements Screen {
                                 game.setScreen(new Level1(game));
                                 break;
                             case 1:
-                                game.setScreen(new Level2(game));
+                                if (prefs.getBoolean("Level 2")) {
+                                    game.setScreen(new Level2(game));
+                                }
+                                else {
+                                    game.setScreen(new LevelSelectScreen(game));
+                                }
                                 break;
                             case 2:
-                                // ((Game) Gdx.app.getApplicationListener()).setScreen(new Level3Screen());
+                                if (prefs.getBoolean("Level 3")) {
+                                    // game.setScreen(new Level3(game));
+                                }
+                                else {
+                                    game.setScreen(new LevelSelectScreen(game));
+                                }
                                 break;
                             case 3:
-                                // ((Game) Gdx.app.getApplicationListener()).setScreen(new Level4Screen());
+                                if (prefs.getBoolean("Level 4")) {
+                                   // game.setScreen(new Level4(game));
+                                }
+                                else {
+                                    game.setScreen(new LevelSelectScreen(game));
+                                }
                                 break;
                             case 4:
-                                // ((Game) Gdx.app.getApplicationListener()).setScreen(new Level5Screen());
+                                if (prefs.getBoolean("Level 5")) {
+                                    // game.setScreen(new Level5(game));
+                                }
+                                else {
+                                    game.setScreen(new LevelSelectScreen(game));
+                                }
                                 break;
                         }
                     }
