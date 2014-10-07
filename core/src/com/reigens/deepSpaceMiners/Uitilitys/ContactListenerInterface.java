@@ -1,6 +1,8 @@
 package com.reigens.deepSpaceMiners.Uitilitys;
 
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.physics.box2d.*;
+import com.reigens.deepSpaceMiners.Assets.Assets;
 import com.reigens.deepSpaceMiners.Assets.Strings;
 import com.reigens.deepSpaceMiners.Screens.Levels.Ui.Hud;
 
@@ -13,6 +15,8 @@ public class ContactListenerInterface implements ContactListener {
     public static int ASTEROIDSMISSED;
     public static int ASTEROIDSGATHERED;
     public static int SHIPDAMAGEPERHIT;
+    public static Sound shipHit = Assets.manager.get(Assets.shipHitSound, Sound.class);
+    public static Sound asteroidGathered = Assets.manager.get(Assets.asteroidSound, Sound.class);
 
     public static void destroyAsteroid(Fixture F, Boolean missed) {
         F.getBody().setUserData(Strings.DELETE);
@@ -23,11 +27,13 @@ public class ContactListenerInterface implements ContactListener {
     }
 
     public static void shipHit() {
+        shipHit.play();
         HULLINTEGRITY -= SHIPDAMAGEPERHIT;
         Hud.updateHull(HULLINTEGRITY);
     }
 
     public static void wormHoleHit(Fixture F) {
+        asteroidGathered.play();
         ASTEROIDSGATHERED++;
         destroyAsteroid(F, false);
         Hud.updateGathered(ASTEROIDSGATHERED);

@@ -1,6 +1,7 @@
 package com.reigens.deepSpaceMiners.Screens.Levels;
 
 import com.badlogic.gdx.*;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
@@ -47,6 +48,7 @@ public class Level1 extends InputProcessorInterface implements Screen {
     private float currentBgY = 0;
     private long lastSpawn = TimeUtils.millis();
     private long lastTimeBg = TimeUtils.millis();
+    private long lastFuelTick = TimeUtils.millis();
     private Array<Body> worldBodies = new Array<Body>();
     private Texture background;
     private Box2DDebugRenderer debugRenderer;
@@ -68,11 +70,12 @@ public class Level1 extends InputProcessorInterface implements Screen {
     private Vector3 tmp = new Vector3();
     private Vector2 tmp2 = new Vector2();
     private int shipFuel = 280;
+    private Sound shipHit, asteroidGathered;
 
     //Changeable Level Variables
     private boolean running = true;
 
-    private int fuelRate = 100;
+    private int fuelRate = 250;
     private int startingHull = 100;// Default Hull integrity to reset to
     private int dmgPerHit = 5; // Damage to ship per asteroid hit
     private int ateroidSpawnTime = 1000;// Asteroid Spawn rate
@@ -90,9 +93,10 @@ public class Level1 extends InputProcessorInterface implements Screen {
             int POSITIONITERATIONS = 3;
 
             // Burn Fuel
-            if (TimeUtils.millis() - lastTimeBg > fuelRate) {
+            if (TimeUtils.millis() - lastFuelTick > fuelRate) {
                 shipFuel--;
                 Hud.updateFuel(shipFuel);
+                lastFuelTick = TimeUtils.millis();
             }
 
             // Spawn Random Asteroids
@@ -106,7 +110,7 @@ public class Level1 extends InputProcessorInterface implements Screen {
             world.step(TIMESTEP, VELOCITYITERATIONS, POSITIONITERATIONS);
 
             // move the separator each 1s
-            if (TimeUtils.millis() - lastTimeBg > 100) {
+            if (TimeUtils.millis() - lastTimeBg > 50) {
                 // move the separator
                 currentBgY -= .01f;
                 // set the current time to lastTimeBg

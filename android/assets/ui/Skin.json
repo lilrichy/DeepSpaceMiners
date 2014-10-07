@@ -29,10 +29,6 @@
 		big:     { up: blue_button_up, down: blue_button_down, font: black64, pressedOffsetX: 1, pressedOffsetY: -1 },
 		small:   { up: blue_button_up, down: blue_button_down, font: black16, pressedOffsetX: 1, pressedOffsetY: -1 }
 	},
-	com.badlogic.gdx.scenes.scene2d.ui.ImageButton$ImageButtonStyle: {
-	    default: { up: closeButtonUp, down: closeButtonDown, pressedOffsetX: 1, pressedOffsetY: -1 },
-	    exit: { up: closeButtonUp, down: closeButtonDown, pressedOffsetX: 1, pressedOffsetY: -1 },
-	},
 	com.badlogic.gdx.scenes.scene2d.ui.List$ListStyle: {
 		default: { font: white32, fontColorUnselected: white, fontColorSelected: black, selection: selectionGreen }
 	},

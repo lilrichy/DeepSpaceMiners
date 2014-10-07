@@ -3,31 +3,45 @@ ui.png
 format: RGBA8888
 filter: Nearest,Nearest
 repeat: none
+gear
+  rotate: false
+  xy: 0, 34
+  size: 166, 166
+  orig: 166, 166
+  offset: 0, 0
+  index: -1
 blue_button_down
   rotate: false
-  xy: 0, 59
+  xy: 166, 151
   size: 190, 49
   orig: 190, 49
   offset: 0, 0
   index: -1
-blue_button_up
-  rotate: false
-  xy: 0, 14
-  size: 190, 45
-  orig: 190, 45
-  offset: 0, 0
-  index: -1
 grey_panel
   rotate: false
-  xy: 190, 8
+  xy: 356, 100
   size: 100, 100
   split: 7, 7, 6, 6
   orig: 100, 100
   offset: 0, 0
   index: -1
+blue_button_up
+  rotate: false
+  xy: 166, 106
+  size: 190, 45
+  orig: 190, 45
+  offset: 0, 0
+  index: -1
+grey_sliderHorizontal
+  rotate: false
+  xy: 166, 102
+  size: 190, 4
+  orig: 190, 4
+  offset: 0, 0
+  index: -1
 selectionGreen
   rotate: false
-  xy: 290, 8
+  xy: 166, 2
   size: 100, 100
   split: 6, 6, 6, 6
   orig: 100, 100
@@ -35,65 +49,37 @@ selectionGreen
   index: -1
 selectionRed
   rotate: false
-  xy: 390, 8
+  xy: 266, 0
   size: 100, 100
   split: 6, 6, 6, 6
   orig: 100, 100
   offset: 0, 0
   index: -1
-grey_sliderHorizontal
-  rotate: false
-  xy: 0, 10
-  size: 190, 4
-  orig: 190, 4
-  offset: 0, 0
-  index: -1
 grey_sliderVertical
   rotate: false
-  xy: 490, 8
+  xy: 366, 0
   size: 4, 100
   orig: 4, 100
   offset: 0, 0
   index: -1
-closeButtonDown
-  rotate: false
-  xy: 494, 63
-  size: 49, 45
-  orig: 49, 45
-  offset: 0, 0
-  index: -1
-closeButtonUp
-  rotate: false
-  xy: 494, 18
-  size: 49, 45
-  orig: 49, 45
-  offset: 0, 0
-  index: -1
-grey_sliderEnd
-  rotate: false
-  xy: 543, 98
-  size: 8, 10
-  orig: 8, 10
-  offset: 0, 0
-  index: -1
-red_cross
-  rotate: false
-  xy: 494, 0
-  size: 18, 18
-  orig: 18, 18
-  offset: 0, 0
-  index: -1
 grey_arrowDownGrey
   rotate: false
-  xy: 0, 0
+  xy: 0, 24
   size: 15, 10
   orig: 15, 10
   offset: 0, 0
   index: -1
 grey_arrowUpGrey
   rotate: false
-  xy: 512, 8
+  xy: 370, 90
   size: 15, 10
   orig: 15, 10
+  offset: 0, 0
+  index: -1
+grey_sliderEnd
+  rotate: false
+  xy: 0, 14
+  size: 8, 10
+  orig: 8, 10
   offset: 0, 0
   index: -1

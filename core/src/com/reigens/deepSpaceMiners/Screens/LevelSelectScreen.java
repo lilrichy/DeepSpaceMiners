@@ -3,8 +3,8 @@ package com.reigens.deepSpaceMiners.Screens;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Preferences;
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.GL20;
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
@@ -30,6 +30,7 @@ public class LevelSelectScreen implements Screen {
     private Table table;
     private String levelText = Strings.level1;
     private String levelGoal = Strings.levelGoal1;
+    Sound buttonChirp;
 
     public LevelSelectScreen(GameMain game) {
         this.game = game;
@@ -40,11 +41,10 @@ public class LevelSelectScreen implements Screen {
         stage = new Stage(new ScreenViewport());
         Gdx.input.setInputProcessor(stage);
         final Preferences prefs = Gdx.app.getPreferences("levelLocks");
+        buttonChirp = Assets.manager.get(Assets.buttonChirp, Sound.class);
 
         Skin skin = new Skin(Gdx.files.internal("ui/Skin.json"), Assets.manager.get(Assets.uiAtlas, TextureAtlas.class));
-        Image screenBackground = new Image(Assets.manager.get(Assets.levelSelectScreenBackground, Texture.class));
-        screenBackground.setFillParent(true);
-        stage.addActor(screenBackground);
+
         table = new Table(skin);
         table.setFillParent(true);
 
@@ -116,6 +116,7 @@ public class LevelSelectScreen implements Screen {
         play.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
+                buttonChirp.play();
                 stage.addAction(sequence(moveTo(0, stage.getHeight(), .5f), run(new Runnable() {
                     @Override
                     public void run() {
@@ -142,7 +143,7 @@ public class LevelSelectScreen implements Screen {
                                 break;
                             case 3:
                                 if (prefs.getBoolean("Level 4")) {
-                                   // game.setScreen(new Level4(game));
+                                    // game.setScreen(new Level4(game));
                                 }
                                 else {
                                     game.setScreen(new LevelSelectScreen(game));
@@ -157,6 +158,25 @@ public class LevelSelectScreen implements Screen {
                                 }
                                 break;
                         }
+                    }
+                })));
+            }
+        });
+
+        //Settings Button
+        ImageButton settingsGear = new ImageButton(skin.getDrawable("gear"));
+        settingsGear.setSize(48, 48);
+        settingsGear.setPosition(Gdx.graphics.getWidth() - settingsGear.getWidth(), Gdx.graphics.getHeight() - settingsGear.getHeight());
+        stage.addActor(settingsGear);
+        settingsGear.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                buttonChirp.play();
+                stage.addAction(sequence(moveTo(0, stage.getHeight(), .5f), run(new Runnable() {
+                    @Override
+                    public void run() {
+                        game.setScreen(new SettingsScreen(game));
+
                     }
                 })));
             }
@@ -185,6 +205,7 @@ public class LevelSelectScreen implements Screen {
         table.add(nest2).colspan(3).row();
 
         stage.addActor(table);
+
         stage.addAction(sequence(moveTo(0, stage.getHeight()), moveTo(0, 0, .5f))); // coming in from top animation
     }
 

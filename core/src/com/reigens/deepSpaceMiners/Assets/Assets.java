@@ -1,6 +1,7 @@
 package com.reigens.deepSpaceMiners.Assets;
 
 import com.badlogic.gdx.assets.AssetManager;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
@@ -43,6 +44,11 @@ public class Assets {
     public static final String wormholeAtlas = "Ships/wormHole/wormHole.pack";
     public static final String smallRegAsteroidAtlas = "Asteroids/RegularAsteroid.pack";
 
+    //Sound Strings
+    public static final String buttonChirp = "SoundFx/zapThreeToneUp.mp3";
+    public static final String asteroidSound = "SoundFx/8bitBomb.wav";
+    public static final String shipHitSound = "SoundFx/deathflash.wav";
+
     public static void load() {
         //    Texture.setAssetManager(manager);
 
@@ -82,7 +88,9 @@ public class Assets {
         manager.load(white64, BitmapFont.class);
 
         // Load Sounds
-
+        manager.load(buttonChirp, Sound.class);
+        manager.load(asteroidSound, Sound.class);
+        manager.load(shipHitSound, Sound.class);
     }
 
     public static void dispose() {

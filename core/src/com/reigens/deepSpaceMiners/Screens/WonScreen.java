@@ -3,12 +3,14 @@ package com.reigens.deepSpaceMiners.Screens;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.badlogic.gdx.scenes.scene2d.ui.*;
+import com.badlogic.gdx.scenes.scene2d.ui.Label;
+import com.badlogic.gdx.scenes.scene2d.ui.Skin;
+import com.badlogic.gdx.scenes.scene2d.ui.Table;
+import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.viewport.StretchViewport;
 import com.reigens.deepSpaceMiners.Assets.Assets;
@@ -34,9 +36,6 @@ public class WonScreen implements Screen {
         stage = new Stage(new StretchViewport(1920, 1080));
         Gdx.input.setInputProcessor(stage);
         Skin skin = new Skin(Gdx.files.internal("ui/Skin.json"), Assets.manager.get(Assets.uiAtlas, TextureAtlas.class));
-        Image screenBackground = new Image(Assets.manager.get(Assets.levelSelectScreenBackground, Texture.class));
-        screenBackground.setFillParent(true);
-        stage.addActor(screenBackground);
         table = new Table(skin);
         table.setFillParent(true);
 
