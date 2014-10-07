@@ -36,7 +36,6 @@ import net.dermetfan.utils.libgdx.graphics.Box2DSprite;
  */
 public class Level1 extends InputProcessorInterface implements Screen {
 
-
     private SpriteBatch batch;
     GameMain game;
     private int ASTEROIDSMISSED = 0, ASTEROIDSGATHERED = 0, HULL = 100;
@@ -74,13 +73,12 @@ public class Level1 extends InputProcessorInterface implements Screen {
 
     //Changeable Level Variables
     private boolean running = true;
-
     private int fuelRate = 250;
     private int startingHull = 100;// Default Hull integrity to reset to
     private int dmgPerHit = 5; // Damage to ship per asteroid hit
     private int ateroidSpawnTime = 1000;// Asteroid Spawn rate
     private float asteroidGravity = 0.05f;
-    private int asteroidsToWin = 20;// Number of asteroids required to win
+    private int asteroidsToWin = 50;// Number of asteroids required to win
 
     public Level1(GameMain game) {
         this.game = game;
@@ -183,11 +181,12 @@ public class Level1 extends InputProcessorInterface implements Screen {
             win();
         }
 
-        if (shipFuel<=10){
-            if (joint != null){
+        if (shipFuel <= 10) {
+            if (joint != null) {
                 world.destroyJoint(joint);
                 mouseJointDef.bodyB.setTransform(mouseJointDef.bodyB.getPosition(), 1.57f);
-                joint = null;}
+                joint = null;
+            }
         }
 
         gameState();
@@ -211,7 +210,6 @@ public class Level1 extends InputProcessorInterface implements Screen {
         final Preferences prefs = Gdx.app.getPreferences("levelLocks");
         prefs.putBoolean("Level 2", true);
         prefs.flush();
-
 
     }
 

@@ -71,13 +71,12 @@ public class Level2 extends InputProcessorInterface implements Screen {
 
     //Changeable Level Variables
     private boolean running = true;
-
     private int fuelRate = 250;
     private int startingHull = 100;// Default Hull integrity to reset to
     private int dmgPerHit = 10; // Damage to ship per asteroid hit
     private int ateroidSpawnTime = 550;//Asteroid Spawn rate
     private float asteroidGravity = .5f;
-    private int asteroidsToWin = 25;// Number of asteroids required to win
+    private int asteroidsToWin = 75;// Number of asteroids required to win
 
     public Level2(GameMain game) {
         this.game = game;
@@ -181,11 +180,12 @@ public class Level2 extends InputProcessorInterface implements Screen {
             win();
         }
 
-        if (shipFuel<=10){
-            if (joint != null){
-            world.destroyJoint(joint);
-            mouseJointDef.bodyB.setTransform(mouseJointDef.bodyB.getPosition(), 1.57f);
-            joint = null;}
+        if (shipFuel <= 10) {
+            if (joint != null) {
+                world.destroyJoint(joint);
+                mouseJointDef.bodyB.setTransform(mouseJointDef.bodyB.getPosition(), 1.57f);
+                joint = null;
+            }
         }
 
         gameState();

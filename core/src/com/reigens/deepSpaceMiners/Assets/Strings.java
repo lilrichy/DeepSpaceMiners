@@ -16,7 +16,7 @@ public class Strings {
             "Once you get enough credits you can work on getting better ship to go after some more high paying jobs. \n\n" +
 
             "Good luck out there!";
-    public static String levelGoal1 = "Collect 20 Asteroids!\n" +
+    public static String levelGoal1 = "Collect 50 Asteroids!\n" +
             "You have a small weak ship, so be careful it won't take much damage.";
 
 
@@ -25,7 +25,7 @@ public class Strings {
             " So we are going to send you to an asteroid system that moves at a much higher rate of speed. If you think you can handle it. \n\n" +
 
             "But be careful of those asteroids because they will tear your ship up really fast if your get hit";
-    public static String levelGoal2 = "Collect 25 Asteroids\n" +
+    public static String levelGoal2 = "Collect 75 Asteroids\n" +
             "Damage from fast moving asteroids is increased so use extra caution!";
 
 
